@@ -402,7 +402,7 @@ main {
 .about-photo {
   position: relative;
   height: 560px;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .about-photo img {
