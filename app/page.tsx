@@ -118,19 +118,24 @@ export default function Home() {
         )}
       </aside>
 
-      <section className="hero" id="top">
-        <div className="grid-noise" />
-        <div className="hero-name hero-first">Tang</div>
-        <div className="portrait-card">
-          <div className="flip-card flip-hero">
-            <div className="flip-face flip-front">
+      <div className="story-sequence">
+        <div className="story-visual">
+          <div className="story-card">
+            <div className="story-face story-hero">
               <img src="/assets/hero.jpg" alt="Tang Xinyi" />
             </div>
-            <div className="flip-face flip-back" aria-hidden="true">
-              <img src="/assets/hero.jpg" alt="" />
+            <div className="story-face story-contents" aria-hidden="true">
+              <img src="/assets/contents.jpg" alt="" />
+            </div>
+            <div className="story-face story-about" aria-hidden="true">
+              <img src="/assets/about.png" alt="" />
             </div>
           </div>
         </div>
+
+      <section className="hero" id="top">
+        <div className="grid-noise" />
+        <div className="hero-name hero-first">Tang</div>
         <div className="hero-name hero-last">Xinyi</div>
         <div className="role-sticker">Interaction Designer</div>
         <p className="hero-role">UX & Interaction Designer</p>
@@ -156,19 +161,6 @@ export default function Home() {
                 <img src="/assets/arrow.svg" alt="" />
               </a>
             ))}
-          </div>
-        </div>
-        <div className="contents-photo">
-          <div className="flip-card flip-section">
-            <div className="flip-face flip-front">
-              <img
-                src="/assets/contents.jpg"
-                alt="Tang Xinyi under spring trees"
-              />
-            </div>
-            <div className="flip-face flip-back" aria-hidden="true">
-              <img src="/assets/contents.jpg" alt="" />
-            </div>
           </div>
         </div>
       </section>
@@ -203,20 +195,11 @@ export default function Home() {
             </div>
           </div>
           <div className="about-photo">
-            <div className="about-portrait-card">
-              <div className="flip-card flip-section">
-                <div className="flip-face flip-front">
-                  <img src="/assets/about.png" alt="Portrait of Tang Xinyi" />
-                </div>
-                <div className="flip-face flip-back" aria-hidden="true">
-                  <img src="/assets/about.png" alt="" />
-                </div>
-              </div>
-            </div>
             <span>Interaction Designer</span>
           </div>
         </div>
       </section>
+      </div>
 
       <div className="marquee" aria-hidden="true">
         <div>

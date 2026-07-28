@@ -107,6 +107,200 @@ main {
   display: none;
 }
 
+.story-sequence {
+  position: relative;
+}
+
+.story-visual {
+  position: sticky;
+  z-index: 3;
+  top: 0;
+  height: 100svh;
+  margin-bottom: -100svh;
+  pointer-events: none;
+}
+
+.story-card {
+  --story-hero-left: 50%;
+  --story-hero-top: 18.7%;
+  --story-hero-width: 290px;
+  --story-hero-height: 429px;
+  --story-contents-left: calc(50% + 78px);
+  --story-contents-top: 41%;
+  --story-contents-width: 470px;
+  --story-contents-height: 342px;
+  --story-about-left: calc(50% + 7px);
+  --story-about-top: -84px;
+  --story-about-width: 560px;
+  --story-about-height: 746px;
+  --story-about-translate: 0%;
+  position: absolute;
+  left: var(--story-hero-left);
+  top: var(--story-hero-top);
+  width: var(--story-hero-width);
+  height: var(--story-hero-height);
+  border-radius: 30px;
+  transform: translateX(-50%) perspective(1200px) rotate(-6.79deg)
+    rotateY(0deg);
+  transform-style: preserve-3d;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.25);
+  will-change: left, top, width, height, transform, border-radius;
+}
+
+.story-face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  will-change: opacity;
+}
+
+.story-face img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.story-hero {
+  opacity: 1;
+  transform: rotateY(0deg);
+}
+
+.story-hero img {
+  object-fit: cover;
+  object-position: 50% 42%;
+  transform: scale(1.12);
+}
+
+.story-contents {
+  opacity: 0;
+  transform: rotateY(180deg);
+}
+
+.story-contents img {
+  object-fit: cover;
+}
+
+.story-about {
+  opacity: 0;
+  transform: rotateY(0deg);
+}
+
+.story-about img {
+  object-fit: contain;
+}
+
+@keyframes portavia-story-card {
+  0%,
+  8% {
+    left: var(--story-hero-left);
+    top: var(--story-hero-top);
+    width: var(--story-hero-width);
+    height: var(--story-hero-height);
+    border-radius: 30px;
+    transform: translateX(-50%) perspective(1200px) scale(1)
+      rotate(-6.79deg) rotateY(0deg);
+  }
+
+  26% {
+    transform: translateX(-24%) perspective(1200px) scale(0.916)
+      rotate(8.36deg) rotateY(125deg);
+  }
+
+  45%,
+  55% {
+    left: var(--story-contents-left);
+    top: var(--story-contents-top);
+    width: var(--story-contents-width);
+    height: var(--story-contents-height);
+    border-radius: 30px;
+    transform: translateX(0%) perspective(1200px) scale(1)
+      rotate(4.51deg) rotateY(180deg);
+  }
+
+  75% {
+    transform: translateX(0%) perspective(1200px) scale(0.93)
+      rotate(8.9deg) rotateY(305deg);
+  }
+
+  92%,
+  100% {
+    left: var(--story-about-left);
+    top: var(--story-about-top);
+    width: var(--story-about-width);
+    height: var(--story-about-height);
+    border-radius: 0;
+    transform: translateX(var(--story-about-translate)) perspective(1200px)
+      scale(1) rotate(0deg) rotateY(360deg);
+  }
+}
+
+@keyframes portavia-story-hero {
+  0%,
+  25% {
+    opacity: 1;
+  }
+  27%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes portavia-story-contents {
+  0%,
+  24% {
+    opacity: 0;
+  }
+  26%,
+  74% {
+    opacity: 1;
+  }
+  76%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes portavia-story-about {
+  0%,
+  74% {
+    opacity: 0;
+  }
+  76%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  .story-card,
+  .story-face {
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: scroll(root block);
+    animation-range: 0 220vh;
+  }
+
+  .story-card {
+    animation-name: portavia-story-card;
+  }
+
+  .story-hero {
+    animation-name: portavia-story-hero;
+  }
+
+  .story-contents {
+    animation-name: portavia-story-contents;
+  }
+
+  .story-about {
+    animation-name: portavia-story-about;
+  }
+}
+
 .hero {
   position: relative;
   height: 100svh;
@@ -489,6 +683,7 @@ main {
 
 .about-photo span {
   position: absolute;
+  z-index: 5;
   left: 117px;
   top: 453px;
   padding: 12px 20px;
@@ -838,6 +1033,12 @@ main {
 }
 
 @media (min-width: 1155px) {
+  .story-card {
+    --story-hero-left: calc(50% - min(50vw, 662.5px) + 676px);
+    --story-hero-width: 370px;
+    --story-hero-height: 513px;
+  }
+
   .topbar {
     padding-right: calc(50% - min(50vw, 662.5px) + 78px);
     padding-left: calc(50% - min(50vw, 662.5px) + 78px);
@@ -895,6 +1096,16 @@ main {
 }
 
 @media (min-width: 1600px) {
+  .story-card {
+    --story-contents-left: calc(50% + 87px);
+    --story-contents-width: 564px;
+    --story-contents-height: 410px;
+    --story-about-left: calc(50% + 20px);
+    --story-about-top: -100px;
+    --story-about-width: 672px;
+    --story-about-height: 895px;
+  }
+
   .contents,
   .about {
     padding: 134.4px calc(50% - min(50vw, 795px) + 84px);
@@ -921,6 +1132,22 @@ main {
 }
 
 @media (max-width: 760px) {
+  .story-card {
+    --story-hero-left: 50%;
+    --story-hero-top: 145px;
+    --story-hero-width: 230px;
+    --story-hero-height: 340px;
+    --story-contents-left: 6%;
+    --story-contents-top: 360px;
+    --story-contents-width: 88vw;
+    --story-contents-height: 230px;
+    --story-about-left: 50%;
+    --story-about-top: 20px;
+    --story-about-width: 420px;
+    --story-about-height: 560px;
+    --story-about-translate: -50%;
+  }
+
   .section {
     height: auto;
     padding: 80px 24px;
