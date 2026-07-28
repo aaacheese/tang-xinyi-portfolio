@@ -164,7 +164,7 @@ main {
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.25);
 }
 
-.portrait-card img {
+.portrait-card .flip-face img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -300,7 +300,7 @@ main {
   transform: rotate(4.51deg);
 }
 
-.contents-photo img {
+.contents-photo .flip-face img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -405,13 +405,86 @@ main {
   overflow: visible;
 }
 
-.about-photo img {
+.about-portrait-card {
   position: absolute;
   left: calc(-224px + 1.5cm);
   top: -260px;
   width: 560px;
   height: 746px;
+}
+
+.about-portrait-card .flip-face img {
+  width: 100%;
+  height: 100%;
   object-fit: contain;
+}
+
+.flip-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.flip-face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+.flip-front {
+  transform: rotateY(0deg);
+}
+
+.flip-back {
+  transform: rotateY(180deg);
+}
+
+.flip-face img {
+  display: block;
+}
+
+@keyframes portavia-image-flip {
+  0% {
+    transform: perspective(1200px) scale(1) rotate(0deg) rotateY(0deg);
+  }
+
+  28% {
+    transform: perspective(1200px) scale(0.916) rotate(8.36deg)
+      rotateY(125deg);
+  }
+
+  55% {
+    transform: perspective(1200px) scale(0.918) rotate(8.9deg)
+      rotateY(171deg);
+  }
+
+  80% {
+    transform: perspective(1200px) scale(0.971) rotate(6.47deg)
+      rotateY(284deg);
+  }
+
+  100% {
+    transform: perspective(1200px) scale(1) rotate(5deg) rotateY(340deg);
+  }
+}
+
+@supports (animation-timeline: view()) {
+  .flip-card {
+    animation: portavia-image-flip linear both;
+    animation-timeline: view(block);
+    animation-range: entry 0% cover 72%;
+  }
+
+  .flip-hero {
+    animation-timeline: scroll(root block);
+    animation-range: 0 190vh;
+  }
 }
 
 .about-photo span {
@@ -1009,7 +1082,7 @@ main {
     margin-top: 50px;
   }
 
-  .about-photo img {
+  .about-portrait-card {
     left: 50%;
     transform: translateX(-50%);
   }
@@ -1104,6 +1177,10 @@ main {
   }
 
   .marquee div {
+    animation: none;
+  }
+
+  .flip-card {
     animation: none;
   }
 }

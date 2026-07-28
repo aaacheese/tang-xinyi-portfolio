@@ -122,7 +122,14 @@ export default function Home() {
         <div className="grid-noise" />
         <div className="hero-name hero-first">Tang</div>
         <div className="portrait-card">
-          <img src="/assets/hero.jpg" alt="Tang Xinyi" />
+          <div className="flip-card flip-hero">
+            <div className="flip-face flip-front">
+              <img src="/assets/hero.jpg" alt="Tang Xinyi" />
+            </div>
+            <div className="flip-face flip-back" aria-hidden="true">
+              <img src="/assets/hero.jpg" alt="" />
+            </div>
+          </div>
         </div>
         <div className="hero-name hero-last">Xinyi</div>
         <div className="role-sticker">Interaction Designer</div>
@@ -152,7 +159,17 @@ export default function Home() {
           </div>
         </div>
         <div className="contents-photo">
-          <img src="/assets/contents.jpg" alt="Tang Xinyi under spring trees" />
+          <div className="flip-card flip-section">
+            <div className="flip-face flip-front">
+              <img
+                src="/assets/contents.jpg"
+                alt="Tang Xinyi under spring trees"
+              />
+            </div>
+            <div className="flip-face flip-back" aria-hidden="true">
+              <img src="/assets/contents.jpg" alt="" />
+            </div>
+          </div>
         </div>
       </section>
 
@@ -186,7 +203,16 @@ export default function Home() {
             </div>
           </div>
           <div className="about-photo">
-            <img src="/assets/about.png" alt="Portrait of Tang Xinyi" />
+            <div className="about-portrait-card">
+              <div className="flip-card flip-section">
+                <div className="flip-face flip-front">
+                  <img src="/assets/about.png" alt="Portrait of Tang Xinyi" />
+                </div>
+                <div className="flip-face flip-back" aria-hidden="true">
+                  <img src="/assets/about.png" alt="" />
+                </div>
+              </div>
+            </div>
             <span>Interaction Designer</span>
           </div>
         </div>
