@@ -165,13 +165,11 @@ main {
 }
 
 .portrait-card img {
-  position: absolute;
-  left: -67.54%;
-  top: -44.6%;
-  width: 190.63%;
-  height: 172.56%;
-  max-width: none;
-  object-fit: fill;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 42%;
+  transform: scale(1.12);
 }
 
 .role-sticker {
@@ -298,12 +296,8 @@ main {
 }
 
 .contents-photo img {
-  position: absolute;
-  left: -3.77%;
-  top: -9.04%;
-  width: 108.05%;
-  height: 113.89%;
-  max-width: none;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 
@@ -402,17 +396,15 @@ main {
 .about-photo {
   position: relative;
   height: 425px;
-  overflow: hidden;
 }
 
 .about-photo img {
   position: absolute;
-  left: -68.87%;
-  top: -56.8%;
-  width: 186%;
-  height: 180.08%;
-  max-width: none;
-  object-fit: fill;
+  left: -30px;
+  top: -76px;
+  width: 342px;
+  height: 472px;
+  object-fit: contain;
 }
 
 .about-photo span {
@@ -766,6 +758,32 @@ main {
 }
 
 @media (min-width: 1155px) {
+  .hero-first {
+    left: calc(50% - 513.5px);
+  }
+
+  .portrait-card {
+    left: calc(50% + 13.9px);
+  }
+
+  .hero-last {
+    left: calc(50% + 168.5px);
+    right: auto;
+  }
+
+  .role-sticker {
+    left: calc(50% - 207.5px);
+  }
+
+  .hero-role {
+    left: calc(50% + 183.5px);
+    right: auto;
+  }
+
+  .availability {
+    right: calc(50% - 513.5px);
+  }
+
   .section-label,
   .about-layout,
   .skills-heading,
@@ -942,10 +960,6 @@ main {
 
   .about-photo img {
     left: 50%;
-    top: -76px;
-    width: 342px;
-    height: 472px;
-    object-fit: contain;
     transform: translateX(-50%);
   }
 
