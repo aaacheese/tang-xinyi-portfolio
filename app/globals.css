@@ -226,10 +226,15 @@ main {
 
 .contents {
   position: relative;
-  height: 766px;
+  height: 100svh;
+  min-height: 820px;
   display: grid;
-  grid-template-columns: 457.5px 1fr;
+  grid-template-columns: 525px 1fr;
   gap: 112px;
+}
+
+.contents-copy {
+  width: 525px;
 }
 
 .eyebrow,
@@ -286,10 +291,10 @@ main {
 
 .contents-photo {
   position: absolute;
-  right: 7%;
-  top: 306px;
-  width: 400px;
-  height: 286px;
+  right: 9%;
+  top: 41%;
+  width: 470px;
+  height: 342px;
   border-radius: 30px;
   overflow: hidden;
   transform: rotate(4.51deg);
@@ -302,7 +307,8 @@ main {
 }
 
 .about {
-  height: 822px;
+  height: 100svh;
+  min-height: 820px;
 }
 
 .section-label {
@@ -319,10 +325,10 @@ main {
 }
 
 .about-layout {
-  padding-top: 78px;
+  padding-top: 48px;
   display: grid;
-  grid-template-columns: minmax(0, 658px) 350px;
-  gap: 19px;
+  grid-template-columns: minmax(0, 756px) 1fr;
+  gap: 20px;
 }
 
 .about-copy h2 {
@@ -395,22 +401,23 @@ main {
 
 .about-photo {
   position: relative;
-  height: 425px;
+  height: 560px;
+  overflow: hidden;
 }
 
 .about-photo img {
   position: absolute;
-  left: -30px;
-  top: -76px;
-  width: 342px;
-  height: 472px;
+  left: -275px;
+  top: -310px;
+  width: 700px;
+  height: 933px;
   object-fit: contain;
 }
 
 .about-photo span {
   position: absolute;
-  left: 101px;
-  top: 357px;
+  left: 117px;
+  top: 453px;
   padding: 12px 20px;
   color: var(--black);
   background: var(--acid);
@@ -790,6 +797,16 @@ main {
 
   .availability {
     right: calc(50% - min(50vw, 662.5px) + 78px);
+  }
+
+  .contents,
+  .about {
+    padding-right: calc(50% - min(50vw, 662.5px) + 70px);
+    padding-left: calc(50% - min(50vw, 662.5px) + 70px);
+  }
+
+  .contents-photo {
+    right: calc(50% - min(50vw, 662.5px) + 120px);
   }
 
   .section-label,
