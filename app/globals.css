@@ -407,7 +407,7 @@ main {
 
 .about-photo img {
   position: absolute;
-  left: -224px;
+  left: calc(-224px + 1.5cm);
   top: -260px;
   width: 560px;
   height: 746px;
