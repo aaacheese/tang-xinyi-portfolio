@@ -407,10 +407,10 @@ main {
 
 .about-photo img {
   position: absolute;
-  left: -275px;
-  top: -310px;
-  width: 700px;
-  height: 933px;
+  left: -224px;
+  top: -260px;
+  width: 560px;
+  height: 746px;
   object-fit: contain;
 }
 
