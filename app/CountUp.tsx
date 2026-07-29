@@ -33,7 +33,7 @@ export default function CountUp({
   const damping = 20 + 40 * (1 / duration);
   const stiffness = 100 * (1 / duration);
   const springValue = useSpring(motionValue, { damping, stiffness });
-  const isInView = useInView(ref, { once: true, margin: "0px" });
+  const isInView = useInView(ref, { once: false, margin: "0px" });
 
   const getDecimalPlaces = (value: number) => {
     const decimals = value.toString().split(".")[1];
@@ -71,11 +71,23 @@ export default function CountUp({
   }, [direction, formatValue, from, to]);
 
   useEffect(() => {
-    if (!isInView || !startWhen) return;
+    const initialValue = direction === "down" ? to : from;
+    const targetValue = direction === "down" ? from : to;
+
+    if (!isInView || !startWhen) {
+      motionValue.jump(initialValue);
+      springValue.jump(initialValue);
+
+      if (ref.current) {
+        ref.current.textContent = formatValue(initialValue);
+      }
+
+      return;
+    }
 
     onStart?.();
     const startTimer = window.setTimeout(() => {
-      motionValue.set(direction === "down" ? from : to);
+      motionValue.set(targetValue);
     }, delay * 1000);
     const endTimer = window.setTimeout(
       () => onEnd?.(),
@@ -91,10 +103,12 @@ export default function CountUp({
     direction,
     duration,
     from,
+    formatValue,
     isInView,
     motionValue,
     onEnd,
     onStart,
+    springValue,
     startWhen,
     to,
   ]);

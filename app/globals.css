@@ -613,7 +613,7 @@ main {
   font: 900 35px/52px "Fraunces", Georgia, serif;
 }
 
-.stats span {
+.stats > div > span {
   color: var(--muted);
   font-size: 11px;
 }
