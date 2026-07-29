@@ -24,6 +24,7 @@ type Frame = {
 
 export default function StoryMotion() {
   useEffect(() => {
+    const visual = document.querySelector<HTMLElement>(".story-visual");
     const card = document.querySelector<HTMLElement>(".story-card");
     const heroFace = document.querySelector<HTMLElement>(".story-hero");
     const contentsFace =
@@ -43,6 +44,7 @@ export default function StoryMotion() {
       document.querySelector<HTMLElement>(".about-photo span");
 
     if (
+      !visual ||
       !card ||
       !heroFace ||
       !contentsFace ||
@@ -119,13 +121,19 @@ export default function StoryMotion() {
       const tilt = frame.rotation + 5.5 * Math.sin(Math.PI * progress);
       const isPastAbout =
         aboutSection.getBoundingClientRect().bottom <= 0;
-      const isHoldingAbout = scroll >= aboutStart && !isPastAbout;
+      const hasReachedAboutPosition = secondProgress >= 0.999;
+      const isHoldingAbout =
+        hasReachedAboutPosition && !isPastAbout;
       const labelDistance = Math.max(window.innerHeight * 0.26, 160);
       const labelProgress = smoothstep(
         (scroll - aboutStart) / labelDistance,
       );
 
-      card.style.position = isHoldingAbout ? "fixed" : "absolute";
+      visual.style.position = isHoldingAbout ? "fixed" : "sticky";
+      visual.style.left = isHoldingAbout ? "0" : "";
+      visual.style.right = isHoldingAbout ? "0" : "";
+      visual.style.width = isHoldingAbout ? "100%" : "";
+      card.style.position = "absolute";
       card.style.left = `${frame.x}px`;
       card.style.top = `${frame.y}px`;
       card.style.width = `${frame.width}px`;
