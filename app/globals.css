@@ -180,10 +180,10 @@ main {
 
 .story-anchor-contents {
   position: absolute;
-  right: 9%;
-  top: 41%;
-  width: 470px;
-  height: 342px;
+  right: calc(9% + 47px);
+  top: calc(41% + 34px);
+  width: 376px;
+  height: 274px;
 }
 
 .story-anchor-about {
@@ -729,6 +729,10 @@ main {
   letter-spacing: 1.2px;
   text-transform: uppercase;
   white-space: nowrap;
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left center;
+  will-change: opacity, transform;
 }
 
 .marquee {
@@ -1076,7 +1080,7 @@ main {
   }
 
   .story-anchor-contents {
-    right: calc(50% - min(50vw, 662.5px) + 120px);
+    right: calc(50% - min(50vw, 662.5px) + 167px);
   }
 
   .story-card {
@@ -1143,9 +1147,10 @@ main {
 
 @media (min-width: 1600px) {
   .story-anchor-contents {
-    right: calc(50% - min(50vw, 795px) + 144px);
-    width: 564px;
-    height: 410px;
+    right: calc(50% - min(50vw, 795px) + 200.4px);
+    top: calc(41% + 41px);
+    width: 451.2px;
+    height: 328px;
   }
 
   .story-card {
@@ -1192,11 +1197,11 @@ main {
   }
 
   .story-anchor-contents {
-    left: 6%;
+    left: 14.8%;
     right: auto;
-    top: 360px;
-    width: 88%;
-    height: 230px;
+    top: 383px;
+    width: 70.4%;
+    height: 184px;
   }
 
   .story-anchor-about {
