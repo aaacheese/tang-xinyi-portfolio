@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import CountUp from "./CountUp";
+import ExperienceStack from "./ExperienceStack";
 import StoryMotion from "./StoryMotion";
 
 export const metadata: Metadata = {
@@ -229,30 +230,7 @@ export default function Home() {
 
       <section className="experience section" id="experience">
         <SectionLabel>02 · Experience</SectionLabel>
-        <div className="experience-list">
-          {experience.map((item) => (
-            <details key={item.company}>
-              <summary>
-                <i style={{ background: item.color }} />
-                <div className="exp-copy">
-                  <h3>
-                    {item.company}
-                    {item.current && <span>Current</span>}
-                  </h3>
-                  <p>{item.role}</p>
-                </div>
-                <div className="exp-date" style={{ color: item.color }}>
-                  <strong>{item.date}</strong>
-                  <span>expand</span>
-                </div>
-              </summary>
-              <p className="exp-detail">
-                Focused on interaction systems, user journeys and product
-                experience across complex digital products.
-              </p>
-            </details>
-          ))}
-        </div>
+        <ExperienceStack items={experience} />
       </section>
 
       <section className="skills section" id="skills">

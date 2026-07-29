@@ -771,38 +771,58 @@ main {
 .experience {
   position: relative;
   z-index: 4;
-  height: 720px;
+  height: auto;
+  min-height: 720px;
   background: var(--panel);
 }
 
-.experience-list {
+.experience-stack {
+  position: relative;
   padding-top: 80px;
 }
 
-.experience-list details {
-  border-bottom: 1px solid var(--line);
+.experience-card-shell {
+  position: sticky;
+  top: calc(20vh + var(--stack-offset));
+  margin-bottom: 100px;
 }
 
-.experience-list summary {
-  min-height: 133px;
+.experience-card {
+  position: relative;
+  min-height: 220px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.018), transparent 48%),
+    #111;
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.32);
+  transform-origin: top center;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+.experience-card summary {
+  min-height: 180px;
   display: grid;
   grid-template-columns: 12px 1fr 220px;
   gap: 32px;
   align-items: start;
-  padding: 32px 0;
+  padding: 44px 40px 36px;
   cursor: pointer;
   list-style: none;
 }
 
-.experience-list summary::-webkit-details-marker {
+.experience-card summary::-webkit-details-marker {
   display: none;
 }
 
-.experience-list summary > i {
+.experience-card summary > i {
   width: 12px;
   height: 12px;
   margin-top: 8px;
   border-radius: 50%;
+  background: var(--experience-color);
 }
 
 .exp-copy h3 {
@@ -831,6 +851,7 @@ main {
 
 .exp-date {
   text-align: right;
+  color: var(--experience-color);
   font: 500 12px/16px "DM Mono", monospace;
   letter-spacing: 1.2px;
 }
@@ -848,10 +869,14 @@ main {
 }
 
 .exp-detail {
-  margin: -18px 0 24px 44px;
+  margin: -24px 40px 40px 84px;
   max-width: 600px;
   color: var(--muted);
   font-size: 13px;
+}
+
+.experience-stack-end {
+  height: 48vh;
 }
 
 .skills {
@@ -1148,7 +1173,7 @@ main {
   .about-layout,
   .skills-heading,
   .skills-grid,
-  .experience-list,
+  .experience-stack,
   .contents-copy {
     max-width: 1700px;
     margin-left: auto;
@@ -1407,8 +1432,29 @@ main {
     transform: translateX(-22%);
   }
 
-  .experience-list summary {
+  .experience-stack {
+    padding-top: 48px;
+  }
+
+  .experience-card {
+    min-height: 0;
+    transform: none !important;
+  }
+
+  .experience-card-shell {
+    position: relative;
+    top: auto;
+    margin-bottom: 16px;
+  }
+
+  .experience-stack-end {
+    height: 0;
+  }
+
+  .experience-card summary {
     grid-template-columns: 12px 1fr;
+    min-height: 0;
+    padding: 28px 22px;
   }
 
   .exp-copy h3 {
@@ -1420,6 +1466,10 @@ main {
   .exp-date {
     grid-column: 2;
     text-align: left;
+  }
+
+  .exp-detail {
+    margin: -10px 22px 28px 66px;
   }
 
   .skills-heading {
@@ -1497,5 +1547,18 @@ main {
 
   .flip-card {
     animation: none;
+  }
+
+  .experience-card-shell {
+    position: relative;
+    top: auto;
+  }
+
+  .experience-card {
+    transform: none !important;
+  }
+
+  .experience-stack-end {
+    height: 0;
   }
 }
