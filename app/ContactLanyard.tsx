@@ -328,6 +328,7 @@ export default function ContactLanyard({
               >
                 <Band
                   isMobile={isMobile}
+                  isReleased={hasDropped}
                   horizontalOffset={isCompact ? 0 : 2.2}
                   frontImage={frontImage || generatedFront}
                   backImage={backImage || generatedBack}
@@ -381,6 +382,7 @@ type BandProps = {
   maxSpeed?: number;
   minSpeed?: number;
   isMobile?: boolean;
+  isReleased?: boolean;
   horizontalOffset?: number;
   frontImage: string;
   backImage: string;
@@ -397,6 +399,7 @@ function Band({
   maxSpeed = 50,
   minSpeed = 0,
   isMobile = false,
+  isReleased = false,
   horizontalOffset = 0,
   frontImage,
   backImage,
@@ -410,8 +413,26 @@ function Band({
   const joint2 = useRef<LanyardRigidBody>(null!);
   const joint3 = useRef<RapierRigidBody>(null!);
   const card = useRef<RapierRigidBody>(null!);
+  const hasAppliedDropImpulse = useRef(false);
   const [dragged, setDragged] = useState<false | THREE.Vector3>(false);
   const [hovered, setHovered] = useState(false);
+
+  useEffect(() => {
+    if (!isReleased || hasAppliedDropImpulse.current) return;
+
+    const frameId = requestAnimationFrame(() => {
+      if (!card.current) return;
+      hasAppliedDropImpulse.current = true;
+      card.current.wakeUp();
+      card.current.applyImpulse({ x: -5.5, y: -9, z: 1.4 }, true);
+      card.current.applyTorqueImpulse(
+        { x: 0.6, y: -0.8, z: -2.8 },
+        true,
+      );
+    });
+
+    return () => cancelAnimationFrame(frameId);
+  }, [isReleased]);
 
   const vectors = useMemo(
     () => ({
