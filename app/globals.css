@@ -760,6 +760,8 @@ main {
 }
 
 .experience {
+  position: relative;
+  z-index: 4;
   height: 720px;
   background: var(--panel);
 }

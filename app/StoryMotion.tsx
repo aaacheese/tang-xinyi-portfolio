@@ -64,7 +64,6 @@ export default function StoryMotion() {
     let about: Frame;
     let contentsStart = 1;
     let aboutStart = 2;
-    let aboutEnd = 3;
 
     const measure = (
       anchor: HTMLElement,
@@ -91,7 +90,6 @@ export default function StoryMotion() {
       about = measure(aboutAnchor, aboutSection, 0, 0);
       contentsStart = contentsSection.offsetTop;
       aboutStart = aboutSection.offsetTop;
-      aboutEnd = aboutStart + aboutSection.offsetHeight;
     };
 
     const mixFrame = (from: Frame, to: Frame, progress: number): Frame => ({
@@ -119,7 +117,8 @@ export default function StoryMotion() {
         : lerp(0, 180, progress);
       const scale = 1 - 0.084 * Math.sin(Math.PI * progress);
       const tilt = frame.rotation + 5.5 * Math.sin(Math.PI * progress);
-      const isPastAbout = scroll >= aboutEnd;
+      const isPastAbout =
+        aboutSection.getBoundingClientRect().bottom <= 0;
       const labelDistance = Math.max(window.innerHeight * 0.26, 160);
       const labelProgress = smoothstep(
         (scroll - aboutStart) / labelDistance,
