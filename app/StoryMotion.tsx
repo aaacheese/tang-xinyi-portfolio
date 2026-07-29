@@ -24,6 +24,8 @@ type Frame = {
 
 export default function StoryMotion() {
   useEffect(() => {
+    const storySequence =
+      document.querySelector<HTMLElement>(".story-sequence");
     const visual = document.querySelector<HTMLElement>(".story-visual");
     const card = document.querySelector<HTMLElement>(".story-card");
     const heroFace = document.querySelector<HTMLElement>(".story-hero");
@@ -47,6 +49,7 @@ export default function StoryMotion() {
       document.querySelector<HTMLElement>(".story-about-label");
 
     if (
+      !storySequence ||
       !visual ||
       !card ||
       !heroFace ||
@@ -76,6 +79,7 @@ export default function StoryMotion() {
     let contentsStart = 1;
     let aboutStart = 2;
     let aboutArrival = 2;
+    let aboutSequenceTop = 0;
 
     const measure = (
       anchor: HTMLElement,
@@ -100,15 +104,31 @@ export default function StoryMotion() {
       hero = measure(heroAnchor, heroSection, 30, -6.79);
       contents = measure(contentsAnchor, contentsSection, 30, 4.51);
       about = measure(aboutAnchor, aboutSection, 0, 0);
+
+      // CSS physical units are defined against 96px per inch. Apply the
+      // requested desktop offset after measurement so parent scaling does not
+      // magnify the final 2cm / 4cm adjustment.
+      const pixelsPerCentimeter = 96 / 2.54;
+      const isDesktop = window.innerWidth > 760;
+      const aboutOffsetX = isDesktop ? 2 * pixelsPerCentimeter : 0;
+      const aboutOffsetY = isDesktop ? 4 * pixelsPerCentimeter : 0;
+      about.x -= aboutOffsetX;
+      about.y -= aboutOffsetY;
       lockedAbout = { ...about };
       portraitLocked = false;
       const aboutLabelRect = aboutLabelAnchor.getBoundingClientRect();
       const aboutSectionRect = aboutSection.getBoundingClientRect();
-      aboutLabelX = aboutLabelRect.left;
-      aboutLabelY = aboutLabelRect.top - aboutSectionRect.top;
+      aboutLabelX = aboutLabelRect.left - aboutOffsetX;
+      aboutLabelY =
+        aboutLabelRect.top - aboutSectionRect.top - aboutOffsetY;
       aboutLabelScale = aboutLabelRect.width / 208;
-      contentsStart = contentsSection.offsetTop;
-      aboutStart = aboutSection.offsetTop;
+      const storySequenceTop =
+        window.scrollY + storySequence.getBoundingClientRect().top;
+      contentsStart =
+        window.scrollY + contentsSection.getBoundingClientRect().top;
+      aboutStart =
+        window.scrollY + aboutSection.getBoundingClientRect().top;
+      aboutSequenceTop = aboutStart - storySequenceTop;
       // Match Portavia's sticky-track behavior: finish the second transition
       // before the next section begins, then clamp the card to its final frame.
       aboutArrival =
@@ -155,8 +175,10 @@ export default function StoryMotion() {
       const labelProgress = smoothstep(
         (scroll - aboutStart) / labelDistance,
       );
+      const releasedToAbout = scroll >= aboutStart;
 
-      visual.style.position = "fixed";
+      visual.style.position = releasedToAbout ? "absolute" : "fixed";
+      visual.style.top = releasedToAbout ? `${aboutSequenceTop}px` : "0";
       visual.style.left = "0";
       visual.style.right = "0";
       visual.style.width = "100%";
