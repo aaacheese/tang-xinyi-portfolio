@@ -37,7 +37,8 @@ input {
 
 main {
   min-width: 320px;
-  overflow: hidden;
+  overflow-x: clip;
+  overflow-y: visible;
 }
 
 .section {
