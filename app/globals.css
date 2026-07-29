@@ -189,7 +189,7 @@ main {
 .story-anchor-about {
   position: absolute;
   left: calc(-224px + 1.5cm);
-  top: 3px;
+  top: -260px;
   width: 560px;
   height: 746px;
 }
