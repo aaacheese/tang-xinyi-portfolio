@@ -151,8 +151,6 @@ export default function StoryMotion() {
       const tilt = hasArrived
         ? about.rotation
         : frame.rotation + 5.5 * Math.sin(Math.PI * progress);
-      const isPastAbout =
-        aboutSection.getBoundingClientRect().bottom <= 0;
       const labelDistance = Math.max(window.innerHeight * 0.26, 160);
       const labelProgress = smoothstep(
         (scroll - aboutStart) / labelDistance,
@@ -180,10 +178,10 @@ export default function StoryMotion() {
         portraitLocked = hasArrived;
       }
 
-      card.style.opacity = isPastAbout ? "0" : "1";
+      card.style.opacity = "1";
       aboutLabel.style.left = `${aboutLabelX}px`;
       aboutLabel.style.top = `${aboutLabelY}px`;
-      aboutLabel.style.opacity = isPastAbout ? "0" : `${labelProgress}`;
+      aboutLabel.style.opacity = `${labelProgress}`;
       aboutLabel.style.transform = `translateY(${
         (1 - labelProgress) * 8
       }px) scale(${aboutLabelScale}) scaleX(${labelProgress})`;
