@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import CountUp from "./CountUp";
 import StoryMotion from "./StoryMotion";
 
 export const metadata: Metadata = {
@@ -183,13 +184,20 @@ export default function Home() {
             </p>
             <div className="stats">
               {[
-                ["4", "实习次数"],
-                ["10+", "校企合作项目"],
-                ["40+", "设计竞赛获奖"],
-                ["10+", "落地项目"],
-              ].map(([value, label]) => (
+                [4, "", "实习次数"],
+                [10, "+", "校企合作项目"],
+                [40, "+", "设计竞赛获奖"],
+                [10, "+", "落地项目"],
+              ].map(([value, suffix, label], index) => (
                 <div key={label}>
-                  <strong>{value}</strong>
+                  <strong>
+                    <CountUp
+                      to={Number(value)}
+                      delay={index * 0.12}
+                      duration={2}
+                    />
+                    {suffix}
+                  </strong>
                   <span>{label}</span>
                 </div>
               ))}
