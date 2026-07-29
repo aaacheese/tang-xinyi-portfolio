@@ -40,8 +40,11 @@ export default function StoryMotion() {
     );
     const aboutAnchor =
       document.querySelector<HTMLElement>(".story-anchor-about");
+    const aboutLabelAnchor = document.querySelector<HTMLElement>(
+      ".story-anchor-about-label",
+    );
     const aboutLabel =
-      document.querySelector<HTMLElement>(".about-photo span");
+      document.querySelector<HTMLElement>(".story-about-label");
 
     if (
       !visual ||
@@ -55,6 +58,7 @@ export default function StoryMotion() {
       !heroAnchor ||
       !contentsAnchor ||
       !aboutAnchor ||
+      !aboutLabelAnchor ||
       !aboutLabel
     ) {
       return;
@@ -64,6 +68,9 @@ export default function StoryMotion() {
     let hero: Frame;
     let contents: Frame;
     let about: Frame;
+    let aboutLabelX = 0;
+    let aboutLabelY = 0;
+    let aboutLabelScale = 1;
     let contentsStart = 1;
     let aboutStart = 2;
 
@@ -90,6 +97,11 @@ export default function StoryMotion() {
       hero = measure(heroAnchor, heroSection, 30, -6.79);
       contents = measure(contentsAnchor, contentsSection, 30, 4.51);
       about = measure(aboutAnchor, aboutSection, 0, 0);
+      const aboutLabelRect = aboutLabelAnchor.getBoundingClientRect();
+      const aboutSectionRect = aboutSection.getBoundingClientRect();
+      aboutLabelX = aboutLabelRect.left;
+      aboutLabelY = aboutLabelRect.top - aboutSectionRect.top;
+      aboutLabelScale = aboutLabelRect.width / 208;
       contentsStart = contentsSection.offsetTop;
       aboutStart = aboutSection.offsetTop;
     };
@@ -121,18 +133,15 @@ export default function StoryMotion() {
       const tilt = frame.rotation + 5.5 * Math.sin(Math.PI * progress);
       const isPastAbout =
         aboutSection.getBoundingClientRect().bottom <= 0;
-      const hasReachedAboutPosition = secondProgress >= 0.999;
-      const isHoldingAbout =
-        hasReachedAboutPosition && !isPastAbout;
       const labelDistance = Math.max(window.innerHeight * 0.26, 160);
       const labelProgress = smoothstep(
         (scroll - aboutStart) / labelDistance,
       );
 
-      visual.style.position = isHoldingAbout ? "fixed" : "sticky";
-      visual.style.left = isHoldingAbout ? "0" : "";
-      visual.style.right = isHoldingAbout ? "0" : "";
-      visual.style.width = isHoldingAbout ? "100%" : "";
+      visual.style.position = "fixed";
+      visual.style.left = "0";
+      visual.style.right = "0";
+      visual.style.width = "100%";
       card.style.position = "absolute";
       card.style.left = `${frame.x}px`;
       card.style.top = `${frame.y}px`;
@@ -141,10 +150,12 @@ export default function StoryMotion() {
       card.style.borderRadius = `${frame.radius}px`;
       card.style.transform = `perspective(1200px) scale(${scale}) rotate(${tilt}deg) rotateY(${angle}deg)`;
       card.style.opacity = isPastAbout ? "0" : "1";
+      aboutLabel.style.left = `${aboutLabelX}px`;
+      aboutLabel.style.top = `${aboutLabelY}px`;
       aboutLabel.style.opacity = isPastAbout ? "0" : `${labelProgress}`;
       aboutLabel.style.transform = `translateY(${
         (1 - labelProgress) * 8
-      }px) scaleX(${labelProgress})`;
+      }px) scale(${aboutLabelScale}) scaleX(${labelProgress})`;
 
       if (angle <= 180) {
         const swap = smoothstep((angle - 80) / 20);

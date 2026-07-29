@@ -133,6 +133,7 @@ export default function Home() {
               <img src="/assets/about.png" alt="" />
             </div>
           </div>
+          <span className="story-about-label">Interaction Designer</span>
         </div>
 
       <section className="hero" id="top">
@@ -200,7 +201,10 @@ export default function Home() {
           </div>
           <div className="about-photo">
             <div className="story-anchor story-anchor-about" aria-hidden="true" />
-            <span>Interaction Designer</span>
+            <div
+              className="story-anchor story-anchor-about-label"
+              aria-hidden="true"
+            />
           </div>
         </div>
       </section>
