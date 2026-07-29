@@ -73,6 +73,7 @@ export default function StoryMotion() {
     let aboutLabelScale = 1;
     let contentsStart = 1;
     let aboutStart = 2;
+    let aboutArrival = 2;
 
     const measure = (
       anchor: HTMLElement,
@@ -104,6 +105,10 @@ export default function StoryMotion() {
       aboutLabelScale = aboutLabelRect.width / 208;
       contentsStart = contentsSection.offsetTop;
       aboutStart = aboutSection.offsetTop;
+      // Match Portavia's sticky-track behavior: finish the second transition
+      // before the next section begins, then clamp the card to its final frame.
+      aboutArrival =
+        contentsStart + (aboutStart - contentsStart) * 0.82;
     };
 
     const mixFrame = (from: Frame, to: Frame, progress: number): Frame => ({
@@ -118,9 +123,12 @@ export default function StoryMotion() {
     const render = () => {
       const scroll = window.scrollY;
       const firstProgress = smoothstep(scroll / contentsStart);
-      const secondProgress = smoothstep(
-        (scroll - contentsStart) / (aboutStart - contentsStart),
-      );
+      const hasArrived = scroll >= aboutArrival;
+      const secondProgress = hasArrived
+        ? 1
+        : smoothstep(
+            (scroll - contentsStart) / (aboutArrival - contentsStart),
+          );
       const inSecondTransition = scroll >= contentsStart;
       const progress = inSecondTransition ? secondProgress : firstProgress;
       const frame = inSecondTransition
@@ -129,8 +137,12 @@ export default function StoryMotion() {
       const angle = inSecondTransition
         ? lerp(180, 360, progress)
         : lerp(0, 180, progress);
-      const scale = 1 - 0.084 * Math.sin(Math.PI * progress);
-      const tilt = frame.rotation + 5.5 * Math.sin(Math.PI * progress);
+      const scale = hasArrived
+        ? 1
+        : 1 - 0.084 * Math.sin(Math.PI * progress);
+      const tilt = hasArrived
+        ? about.rotation
+        : frame.rotation + 5.5 * Math.sin(Math.PI * progress);
       const isPastAbout =
         aboutSection.getBoundingClientRect().bottom <= 0;
       const labelDistance = Math.max(window.innerHeight * 0.26, 160);
