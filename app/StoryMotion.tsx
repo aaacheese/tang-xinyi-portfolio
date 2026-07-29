@@ -106,21 +106,27 @@ export default function StoryMotion() {
       about = measure(aboutAnchor, aboutSection, 0, 0);
 
       // CSS physical units are defined against 96px per inch. Apply the
-      // requested desktop offset after measurement so parent scaling does not
-      // magnify the final 2cm / 4cm adjustment.
+      // requested desktop offsets after measurement so parent scaling does not
+      // magnify the final centimeter-based adjustments.
       const pixelsPerCentimeter = 96 / 2.54;
       const isDesktop = window.innerWidth > 760;
       const aboutOffsetX = isDesktop ? 2 * pixelsPerCentimeter : 0;
-      const aboutOffsetY = isDesktop ? 4 * pixelsPerCentimeter : 0;
+      const aboutOffsetY = isDesktop ? 5 * pixelsPerCentimeter : 0;
       about.x -= aboutOffsetX;
       about.y -= aboutOffsetY;
       lockedAbout = { ...about };
       portraitLocked = false;
       const aboutLabelRect = aboutLabelAnchor.getBoundingClientRect();
       const aboutSectionRect = aboutSection.getBoundingClientRect();
-      aboutLabelX = aboutLabelRect.left - aboutOffsetX;
+      const aboutLabelOffsetX = isDesktop
+        ? 1 * pixelsPerCentimeter
+        : 0;
+      const aboutLabelOffsetY = isDesktop
+        ? 1 * pixelsPerCentimeter
+        : 0;
+      aboutLabelX = aboutLabelRect.left - aboutLabelOffsetX;
       aboutLabelY =
-        aboutLabelRect.top - aboutSectionRect.top - aboutOffsetY;
+        aboutLabelRect.top - aboutSectionRect.top - aboutLabelOffsetY;
       aboutLabelScale = aboutLabelRect.width / 208;
       const storySequenceTop =
         window.scrollY + storySequence.getBoundingClientRect().top;
@@ -171,9 +177,9 @@ export default function StoryMotion() {
       const tilt = hasArrived
         ? about.rotation
         : frame.rotation + 5.5 * Math.sin(Math.PI * progress);
-      const labelDistance = Math.max(window.innerHeight * 0.26, 160);
       const labelProgress = smoothstep(
-        (scroll - aboutStart) / labelDistance,
+        (scroll - aboutArrival) /
+          Math.max(aboutStart - aboutArrival, 1),
       );
       const releasedToAbout = scroll >= aboutStart;
 
