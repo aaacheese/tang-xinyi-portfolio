@@ -26,18 +26,18 @@ const experience = [
     height: 1086,
   },
   {
-    id: "xiaohongshu",
-    imageSrc: "/assets/experience-xiaohongshu.png",
-    alt: "Xiaohongshu (RED) — Experience Design, Commerce Experience Designer",
-    width: 1606,
-    height: 1086,
-  },
-  {
     id: "meituan",
     imageSrc: "/assets/experience-meituan.png",
     alt: "Meituan (Dianping) — UI and UX Design, Dianping UX Experience Designer",
     width: 1606,
     height: 1090,
+  },
+  {
+    id: "xiaohongshu",
+    imageSrc: "/assets/experience-xiaohongshu.png",
+    alt: "Xiaohongshu (RED) — Experience Design, Commerce Experience Designer",
+    width: 1606,
+    height: 1086,
   },
 ];
 
@@ -289,7 +289,7 @@ export default function Home() {
             </a>
           </div>
         </div>
-        <ContactLanyard />
+        <ContactLanyard frontImage="/assets/lanyard/frame-8.png" />
         <div className="contact-bottom">
           <div className="contact-data">
             <span>
