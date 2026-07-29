@@ -119,11 +119,13 @@ export default function StoryMotion() {
       const tilt = frame.rotation + 5.5 * Math.sin(Math.PI * progress);
       const isPastAbout =
         aboutSection.getBoundingClientRect().bottom <= 0;
+      const isHoldingAbout = scroll >= aboutStart && !isPastAbout;
       const labelDistance = Math.max(window.innerHeight * 0.26, 160);
       const labelProgress = smoothstep(
         (scroll - aboutStart) / labelDistance,
       );
 
+      card.style.position = isHoldingAbout ? "fixed" : "absolute";
       card.style.left = `${frame.x}px`;
       card.style.top = `${frame.y}px`;
       card.style.width = `${frame.width}px`;
