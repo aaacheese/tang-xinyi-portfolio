@@ -119,10 +119,6 @@ export default function StoryMotion() {
         : lerp(0, 180, progress);
       const scale = 1 - 0.084 * Math.sin(Math.PI * progress);
       const tilt = frame.rotation + 5.5 * Math.sin(Math.PI * progress);
-      const aboutHoldOffset =
-        scroll >= aboutStart
-          ? Math.min(scroll - aboutStart, aboutEnd - aboutStart)
-          : 0;
       const isPastAbout = scroll >= aboutEnd;
       const labelDistance = Math.max(window.innerHeight * 0.26, 160);
       const labelProgress = smoothstep(
@@ -130,7 +126,7 @@ export default function StoryMotion() {
       );
 
       card.style.left = `${frame.x}px`;
-      card.style.top = `${frame.y + aboutHoldOffset}px`;
+      card.style.top = `${frame.y}px`;
       card.style.width = `${frame.width}px`;
       card.style.height = `${frame.height}px`;
       card.style.borderRadius = `${frame.radius}px`;
@@ -138,7 +134,7 @@ export default function StoryMotion() {
       card.style.opacity = isPastAbout ? "0" : "1";
       aboutLabel.style.opacity = isPastAbout ? "0" : `${labelProgress}`;
       aboutLabel.style.transform = `translateY(${
-        aboutHoldOffset + (1 - labelProgress) * 8
+        (1 - labelProgress) * 8
       }px) scaleX(${labelProgress})`;
 
       if (angle <= 180) {
