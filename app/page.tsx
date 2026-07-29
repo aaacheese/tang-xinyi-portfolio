@@ -19,13 +19,6 @@ const contents = [
 
 const experience = [
   {
-    id: "tencent",
-    imageSrc: "/assets/experience-tencent.png",
-    alt: "Tencent — UI Design, CSIG Interaction Designer",
-    width: 1592,
-    height: 1086,
-  },
-  {
     id: "meituan",
     imageSrc: "/assets/experience-meituan.png",
     alt: "Meituan (Dianping) — UI and UX Design, Dianping UX Experience Designer",
@@ -37,6 +30,13 @@ const experience = [
     imageSrc: "/assets/experience-xiaohongshu.png",
     alt: "Xiaohongshu (RED) — Experience Design, Commerce Experience Designer",
     width: 1606,
+    height: 1086,
+  },
+  {
+    id: "tencent",
+    imageSrc: "/assets/experience-tencent.png",
+    alt: "Tencent — UI Design, CSIG Interaction Designer",
+    width: 1592,
     height: 1086,
   },
 ];
