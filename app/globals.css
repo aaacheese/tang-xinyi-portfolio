@@ -191,7 +191,7 @@ main {
 .story-anchor-about {
   position: absolute;
   left: calc(-224px + 1.5cm);
-  top: -260px;
+  top: calc(-260px - 3cm);
   width: 560px;
   height: 746px;
 }
@@ -722,7 +722,7 @@ main {
 .story-anchor-about-label {
   position: absolute;
   left: 117px;
-  top: 453px;
+  top: calc(453px - 3cm);
   width: 208px;
   height: 40px;
 }
