@@ -942,6 +942,9 @@ main {
 }
 
 .contact-hero {
+  position: relative;
+  z-index: 2;
+  width: 620px;
   padding-top: 190px;
 }
 
@@ -996,6 +999,115 @@ main {
   color: var(--paper);
 }
 
+.contact-lanyard {
+  position: absolute;
+  z-index: 1;
+  top: 120px;
+  right: 24px;
+  width: clamp(520px, 46vw, 760px);
+  height: 780px;
+}
+
+.contact-lanyard canvas {
+  width: 100% !important;
+  height: 100% !important;
+  touch-action: none;
+}
+
+.contact-lanyard-hint {
+  position: absolute;
+  right: 36px;
+  bottom: 42px;
+  color: rgba(242, 237, 228, 0.28);
+  font: 500 10px/16px "DM Mono", monospace;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.contact-lanyard-static {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contact-lanyard-static::before {
+  content: "TXY · INTERACTION DESIGN";
+  position: absolute;
+  top: -80px;
+  left: 50%;
+  width: 76px;
+  height: 420px;
+  padding-top: 24px;
+  overflow: hidden;
+  background: #070807;
+  color: var(--acid);
+  font: 600 10px/18px "DM Mono", monospace;
+  letter-spacing: 2px;
+  text-align: center;
+  writing-mode: vertical-rl;
+  transform: translateX(-50%);
+}
+
+.contact-lanyard-static-card {
+  position: relative;
+  z-index: 1;
+  width: 245px;
+  aspect-ratio: 0.662;
+  margin-top: 190px;
+  padding: 32px 28px;
+  border-radius: 16px;
+  background:
+    linear-gradient(rgba(8, 9, 8, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(8, 9, 8, 0.08) 1px, transparent 1px),
+    var(--acid);
+  background-size: 20px 20px;
+  color: var(--black);
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.34);
+  transform: rotate(4deg);
+}
+
+.contact-lanyard-static-card b,
+.contact-lanyard-static-card span,
+.contact-lanyard-static-card strong,
+.contact-lanyard-static-card small,
+.contact-lanyard-static-card em {
+  display: block;
+}
+
+.contact-lanyard-static-card b {
+  font: 900 46px/1 "Fraunces", Georgia, serif;
+}
+
+.contact-lanyard-static-card span {
+  margin-top: 16px;
+  font: 600 9px/14px "DM Mono", monospace;
+  letter-spacing: 2px;
+}
+
+.contact-lanyard-static-card strong {
+  margin-top: 74px;
+  font: 900 42px/0.92 "Fraunces", Georgia, serif;
+}
+
+.contact-lanyard-static-card small {
+  margin-top: 24px;
+  font: 600 10px/15px "DM Mono", monospace;
+  letter-spacing: 1px;
+}
+
+.contact-lanyard-static-card em {
+  position: absolute;
+  left: 28px;
+  bottom: 30px;
+  font: 500 9px/14px "DM Mono", monospace;
+  letter-spacing: 1px;
+  opacity: 0.6;
+}
+
 .contact-bottom {
   position: absolute;
   left: 64px;
@@ -1037,6 +1149,31 @@ main {
   font: 400 12px/16px "DM Mono", monospace;
   letter-spacing: 1.2px;
   text-transform: uppercase;
+}
+
+@media (max-width: 1024px) {
+  .contact {
+    height: auto;
+    min-height: 0;
+  }
+
+  .contact-hero {
+    width: min(620px, 100%);
+  }
+
+  .contact-lanyard {
+    position: relative;
+    top: auto;
+    right: auto;
+    width: min(100%, 700px);
+    height: 620px;
+    margin: 54px auto 0;
+  }
+
+  .contact-bottom {
+    position: static;
+    margin-top: 44px;
+  }
 }
 
 @media (min-width: 1155px) {
@@ -1415,6 +1552,7 @@ main {
   }
 
   .contact {
+    height: auto;
     min-height: 980px;
   }
 
@@ -1423,6 +1561,7 @@ main {
   }
 
   .contact-hero {
+    width: 100%;
     padding-top: 130px;
   }
 
@@ -1444,9 +1583,20 @@ main {
     min-width: 100%;
   }
 
+  .contact-lanyard {
+    width: 100%;
+    height: 500px;
+    margin-top: 56px;
+  }
+
+  .contact-lanyard-hint {
+    right: 16px;
+    bottom: 18px;
+  }
+
   .contact-bottom {
     position: static;
-    margin-top: 96px;
+    margin-top: 48px;
     flex-direction: column;
     align-items: flex-start;
     gap: 36px;
@@ -1476,5 +1626,9 @@ main {
 
   .project-stack-end {
     height: 0;
+  }
+
+  .contact-lanyard canvas {
+    display: none;
   }
 }

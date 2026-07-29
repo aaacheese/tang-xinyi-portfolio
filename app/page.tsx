@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import CountUp from "./CountUp";
+import ContactLanyard from "./ContactLanyard";
 import ExperienceStack from "./ExperienceStack";
 import StoryMotion from "./StoryMotion";
 
@@ -288,6 +289,7 @@ export default function Home() {
             </a>
           </div>
         </div>
+        <ContactLanyard />
         <div className="contact-bottom">
           <div className="contact-data">
             <span>
