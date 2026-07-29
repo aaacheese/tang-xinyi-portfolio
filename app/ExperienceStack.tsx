@@ -33,11 +33,11 @@ const ITEM_DISTANCE = 100;
 const ITEM_SCALE = 0.03;
 const ITEM_STACK_DISTANCE = 30;
 const STACK_POSITION = "20%";
-const SCALE_END_POSITION = "10%";
 const BASE_SCALE = 0.85;
 const ROTATION_AMOUNT = 0;
 const BLUR_AMOUNT = 0;
 const MOBILE_BREAKPOINT = 760;
+const UNFOLD_DISTANCE = 160;
 
 const calculateProgress = (scrollTop: number, start: number, end: number) => {
   if (scrollTop < start) return 0;
@@ -98,64 +98,39 @@ export default function ExperienceStack({
       STACK_POSITION,
       containerHeight,
     );
-    const scaleEndPositionPx = parsePercentage(
-      SCALE_END_POSITION,
-      containerHeight,
-    );
-    const endElement = scroller.querySelector<HTMLElement>(".scroll-stack-end");
-    const endElementTop = endElement?.offsetTop ?? 0;
 
     cardsRef.current.forEach((card, index) => {
       const cardTop = card.offsetTop;
-      const triggerStart =
-        cardTop - stackPositionPx - ITEM_STACK_DISTANCE * index;
-      const triggerEnd = cardTop - scaleEndPositionPx;
-      const pinStart = triggerStart;
-      const pinEnd = endElementTop - containerHeight / 2;
-
-      const scaleProgress = calculateProgress(
+      const unfoldStart = index * UNFOLD_DISTANCE;
+      const unfoldEnd = unfoldStart + UNFOLD_DISTANCE;
+      const unfoldProgress = calculateProgress(
         scrollTop,
-        triggerStart,
-        triggerEnd,
+        unfoldStart,
+        unfoldEnd,
       );
       const targetScale = BASE_SCALE + index * ITEM_SCALE;
-      const scale = 1 - scaleProgress * (1 - targetScale);
+      const scale =
+        targetScale + unfoldProgress * (1 - targetScale);
       const rotation = ROTATION_AMOUNT
-        ? index * ROTATION_AMOUNT * scaleProgress
+        ? index * ROTATION_AMOUNT * (1 - unfoldProgress)
         : 0;
 
       let blur = 0;
       if (BLUR_AMOUNT) {
-        let topCardIndex = 0;
-        cardsRef.current.forEach((candidate, candidateIndex) => {
-          const candidateTrigger =
-            candidate.offsetTop -
-            stackPositionPx -
-            ITEM_STACK_DISTANCE * candidateIndex;
-          if (scrollTop >= candidateTrigger) {
-            topCardIndex = candidateIndex;
-          }
-        });
-
-        if (index < topCardIndex) {
-          blur = Math.max(0, (topCardIndex - index) * BLUR_AMOUNT);
-        }
+        blur = Math.max(
+          0,
+          (cardsRef.current.length - index - 1) *
+            BLUR_AMOUNT *
+            (1 - unfoldProgress),
+        );
       }
 
-      let translateY = 0;
-      if (scrollTop >= pinStart && scrollTop <= pinEnd) {
-        translateY =
-          scrollTop -
-          cardTop +
-          stackPositionPx +
-          ITEM_STACK_DISTANCE * index;
-      } else if (scrollTop > pinEnd) {
-        translateY =
-          pinEnd -
-          cardTop +
-          stackPositionPx +
-          ITEM_STACK_DISTANCE * index;
-      }
+      const stackedTop =
+        stackPositionPx + ITEM_STACK_DISTANCE * index;
+      const naturalTop = cardTop - scrollTop;
+      const visibleTop =
+        stackedTop + (naturalTop - stackedTop) * unfoldProgress;
+      const translateY = visibleTop - naturalTop;
 
       const nextTransform: CardTransform = {
         translateY: Math.round(translateY * 100) / 100,

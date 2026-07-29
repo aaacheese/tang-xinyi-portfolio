@@ -800,9 +800,9 @@ main {
 
 .scroll-stack-card {
   position: relative;
-  width: 100%;
+  width: calc(100% + 3cm);
   height: 220px;
-  margin: 30px 0;
+  margin: 30px 0 30px -1.5cm;
   box-sizing: border-box;
   transform-origin: top center;
   transform-style: preserve-3d;
@@ -1467,6 +1467,7 @@ main {
   }
 
   .scroll-stack-card {
+    width: 100%;
     height: auto;
     min-height: 0;
     margin: 0 0 16px;
