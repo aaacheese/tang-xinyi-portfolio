@@ -776,129 +776,38 @@ main {
   background: var(--panel);
 }
 
-.scroll-stack-scroller {
+.project-stack {
   position: relative;
   width: 100%;
-  height: 100vh;
-  overflow-x: visible;
-  overflow-y: auto;
-  overscroll-behavior-y: auto;
-  -webkit-overflow-scrolling: touch;
-  transform: translateZ(0);
-  will-change: scroll-position;
-  scrollbar-width: none;
+  max-width: 1600px;
+  margin: 64px auto 0;
 }
 
-.scroll-stack-scroller::-webkit-scrollbar {
-  display: none;
-}
-
-.scroll-stack-inner {
-  min-height: 100vh;
-  padding: 20vh 0 50rem;
-}
-
-.scroll-stack-card {
-  position: relative;
-  width: calc(100% + 3cm);
-  height: 220px;
-  margin: 30px 0 30px -1.5cm;
+.project-stack-card {
+  position: sticky;
+  top: 80px;
+  width: 100%;
+  margin: 0 auto 120px;
   box-sizing: border-box;
-  transform-origin: top center;
+  overflow: hidden;
+  border-radius: 28px;
+  background: #0b0b0b;
+  box-shadow: 0 36px 90px rgba(0, 0, 0, 0.42);
+  transform-origin: center center;
   transform-style: preserve-3d;
   backface-visibility: hidden;
-  will-change: transform, filter;
+  will-change: transform;
 }
 
-.experience-card {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  border: 1px solid var(--line);
-  border-radius: 4px;
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.018), transparent 48%),
-    #111;
-  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.32);
-}
-
-.experience-card summary {
-  min-height: 180px;
-  display: grid;
-  grid-template-columns: 12px 1fr 220px;
-  gap: 32px;
-  align-items: start;
-  padding: 44px 40px 36px;
-  cursor: pointer;
-  list-style: none;
-}
-
-.experience-card summary::-webkit-details-marker {
-  display: none;
-}
-
-.experience-card summary > i {
-  width: 12px;
-  height: 12px;
-  margin-top: 8px;
-  border-radius: 50%;
-  background: var(--experience-color);
-}
-
-.exp-copy h3 {
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font: 900 29px/43px "Fraunces", Georgia, serif;
-}
-
-.exp-copy h3 span {
-  padding: 3px 9px;
-  border: 1px solid rgba(212, 255, 60, 0.4);
-  background: rgba(212, 255, 60, 0.13);
-  color: var(--acid);
-  font: 500 10px/15px "DM Mono", monospace;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
-.exp-copy p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 14px;
-}
-
-.exp-date {
-  text-align: right;
-  color: var(--experience-color);
-  font: 500 12px/16px "DM Mono", monospace;
-  letter-spacing: 1.2px;
-}
-
-.exp-date strong,
-.exp-date span {
+.project-stack-card img {
   display: block;
-}
-
-.exp-date span {
-  margin-top: 4px;
-  color: var(--muted);
-  font: 500 12px/16px "DM Sans", sans-serif;
-  letter-spacing: 0;
-}
-
-.exp-detail {
-  margin: -24px 40px 40px 84px;
-  max-width: 600px;
-  color: var(--muted);
-  font-size: 13px;
-}
-
-.scroll-stack-end {
   width: 100%;
-  height: 1px;
+  height: auto;
+}
+
+.project-stack-end {
+  width: 100%;
+  height: 55vh;
 }
 
 .skills {
@@ -1195,7 +1104,7 @@ main {
   .about-layout,
   .skills-heading,
   .skills-grid,
-  .scroll-stack-scroller,
+  .project-stack,
   .contents-copy {
     max-width: 1700px;
     margin-left: auto;
@@ -1454,51 +1363,30 @@ main {
     transform: translateX(-22%);
   }
 
-  .scroll-stack-scroller {
-    height: auto;
-    overflow: visible;
-    transform: none;
-    will-change: auto;
+  .project-stack {
+    margin-top: 48px;
   }
 
-  .scroll-stack-inner {
-    min-height: 0;
-    padding: 48px 0 0;
-  }
-
-  .scroll-stack-card {
+  .project-stack-card {
+    position: relative;
+    top: auto;
     width: 100%;
-    height: auto;
-    min-height: 0;
     margin: 0 0 16px;
+    aspect-ratio: 335 / 350;
+    border-radius: 18px;
     transform: none !important;
-    filter: none !important;
     will-change: auto;
   }
 
-  .experience-card {
-    height: auto;
+  .project-stack-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
   }
 
-  .experience-card summary {
-    grid-template-columns: 12px 1fr;
-    min-height: 0;
-    padding: 28px 22px;
-  }
-
-  .exp-copy h3 {
-    font-size: 22px;
-    line-height: 32px;
-    flex-wrap: wrap;
-  }
-
-  .exp-date {
-    grid-column: 2;
-    text-align: left;
-  }
-
-  .exp-detail {
-    margin: -10px 22px 28px 66px;
+  .project-stack-end {
+    height: 0;
   }
 
   .skills-heading {
@@ -1578,23 +1466,15 @@ main {
     animation: none;
   }
 
-  .scroll-stack-scroller {
-    height: auto;
-    overflow: visible;
-  }
-
-  .scroll-stack-inner {
-    min-height: 0;
-    padding-bottom: 0;
-  }
-
-  .scroll-stack-card {
+  .project-stack-card {
+    position: relative;
+    top: auto;
+    margin-bottom: 24px;
     transform: none !important;
-    filter: none !important;
     will-change: auto;
   }
 
-  .scroll-stack-end {
+  .project-stack-end {
     height: 0;
   }
 }

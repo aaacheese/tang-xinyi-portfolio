@@ -18,23 +18,25 @@ const contents = [
 
 const experience = [
   {
-    company: "Tencent",
-    role: "CSIG · Interaction Designer",
-    date: "Jun 2026 – Present",
-    color: "#d4ff3c",
-    current: true,
+    id: "tencent",
+    imageSrc: "/assets/experience-tencent.png",
+    alt: "Tencent — UI Design, CSIG Interaction Designer",
+    width: 1592,
+    height: 1086,
   },
   {
-    company: "Xiaohongshu (RED)",
-    role: "Commerce Experience · UX Designer",
-    date: "Mar 2026 – Jun 2026",
-    color: "#ff7c3c",
+    id: "xiaohongshu",
+    imageSrc: "/assets/experience-xiaohongshu.png",
+    alt: "Xiaohongshu (RED) — Experience Design, Commerce Experience Designer",
+    width: 1606,
+    height: 1086,
   },
   {
-    company: "Meituan (Dianping)",
-    role: "Dianping UX · Experience Designer",
-    date: "Jun 2025 – Sep 2025",
-    color: "#3caaff",
+    id: "meituan",
+    imageSrc: "/assets/experience-meituan.png",
+    alt: "Meituan (Dianping) — UI and UX Design, Dianping UX Experience Designer",
+    width: 1606,
+    height: 1090,
   },
 ];
 
