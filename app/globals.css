@@ -190,10 +190,10 @@ main {
 
 .story-anchor-about {
   position: absolute;
-  left: -121px;
-  top: -32.797px;
-  width: 342px;
-  height: 472px;
+  left: calc(-224px + 1.5cm);
+  top: calc(-260px - 3cm);
+  width: 560px;
+  height: 746px;
 }
 
 .story-hero {
@@ -539,6 +539,7 @@ main {
 }
 
 .about {
+  margin-top: 4cm;
   height: 100svh;
   min-height: 820px;
 }
@@ -721,9 +722,9 @@ main {
 
 .story-anchor-about-label {
   position: absolute;
-  left: 2px;
-  top: 387.164px;
-  width: 207px;
+  left: 117px;
+  top: calc(453px - 3cm);
+  width: 208px;
   height: 40px;
 }
 
