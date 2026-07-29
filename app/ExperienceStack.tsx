@@ -1,9 +1,12 @@
 "use client";
 
+import Lenis from "lenis";
 import {
   useCallback,
   useEffect,
+  useLayoutEffect,
   useRef,
+  useState,
   type CSSProperties,
 } from "react";
 
@@ -19,152 +22,328 @@ type ExperienceStackProps = {
   items: ExperienceItem[];
 };
 
-const clamp = (value: number, min = 0, max = 1) =>
-  Math.min(max, Math.max(min, value));
+type CardTransform = {
+  translateY: number;
+  scale: number;
+  rotation: number;
+  blur: number;
+};
+
+const ITEM_DISTANCE = 100;
+const ITEM_SCALE = 0.03;
+const ITEM_STACK_DISTANCE = 30;
+const STACK_POSITION = "20%";
+const SCALE_END_POSITION = "10%";
+const BASE_SCALE = 0.85;
+const ROTATION_AMOUNT = 0;
+const BLUR_AMOUNT = 0;
+const MOBILE_BREAKPOINT = 760;
+
+const calculateProgress = (scrollTop: number, start: number, end: number) => {
+  if (scrollTop < start) return 0;
+  if (scrollTop > end) return 1;
+  return (scrollTop - start) / Math.max(end - start, 1);
+};
+
+const parsePercentage = (value: string | number, containerHeight: number) => {
+  if (typeof value === "string" && value.includes("%")) {
+    return (Number.parseFloat(value) / 100) * containerHeight;
+  }
+  return Number.parseFloat(String(value));
+};
 
 export default function ExperienceStack({
   items,
 }: ExperienceStackProps) {
-  const stackRef = useRef<HTMLDivElement>(null);
-  const shellsRef = useRef<Array<HTMLDivElement | null>>([]);
-  const cardsRef = useRef<Array<HTMLDetailsElement | null>>([]);
-  const naturalTopsRef = useRef<number[]>([]);
-  const animationFrameRef = useRef(0);
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const animationFrameRef = useRef<number | null>(null);
+  const lenisRef = useRef<Lenis | null>(null);
+  const cardsRef = useRef<HTMLDivElement[]>([]);
+  const lastTransformsRef = useRef<Map<number, CardTransform>>(new Map());
+  const isUpdatingRef = useRef(false);
+  const [stackEnabled, setStackEnabled] = useState(false);
 
-  const measure = useCallback(() => {
-    const stack = stackRef.current;
-    if (!stack) return;
+  useEffect(() => {
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    );
 
-    const stackTop = window.scrollY + stack.getBoundingClientRect().top;
-    let nextTop =
-      stackTop + Number.parseFloat(window.getComputedStyle(stack).paddingTop);
-    naturalTopsRef.current = shellsRef.current.map((shell) => {
-      if (!shell) return 0;
-
-      const naturalTop = nextTop;
-      const marginBottom = Number.parseFloat(
-        window.getComputedStyle(shell).marginBottom,
+    const updateMode = () => {
+      setStackEnabled(
+        window.innerWidth > MOBILE_BREAKPOINT && !reducedMotion.matches,
       );
-      nextTop += shell.offsetHeight + marginBottom;
-      return naturalTop;
-    });
+    };
+
+    updateMode();
+    reducedMotion.addEventListener("change", updateMode);
+    window.addEventListener("resize", updateMode);
+
+    return () => {
+      reducedMotion.removeEventListener("change", updateMode);
+      window.removeEventListener("resize", updateMode);
+    };
   }, []);
 
-  const update = useCallback(() => {
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    const isDesktop = window.innerWidth > 760;
-
-    if (!isDesktop || reduceMotion) {
-      cardsRef.current.forEach((card) => {
-        if (card) card.style.transform = "none";
-      });
+  const updateCardTransforms = useCallback(() => {
+    const scroller = scrollerRef.current;
+    if (!scroller || !cardsRef.current.length || isUpdatingRef.current) {
       return;
     }
 
-    const scrollTop = window.scrollY;
-    const stackPosition = window.innerHeight * 0.2;
-    const scaleEndPosition = window.innerHeight * 0.1;
+    isUpdatingRef.current = true;
+
+    const scrollTop = scroller.scrollTop;
+    const containerHeight = scroller.clientHeight;
+    const stackPositionPx = parsePercentage(
+      STACK_POSITION,
+      containerHeight,
+    );
+    const scaleEndPositionPx = parsePercentage(
+      SCALE_END_POSITION,
+      containerHeight,
+    );
+    const endElement = scroller.querySelector<HTMLElement>(".scroll-stack-end");
+    const endElementTop = endElement?.offsetTop ?? 0;
 
     cardsRef.current.forEach((card, index) => {
-      if (!card) return;
+      const cardTop = card.offsetTop;
+      const triggerStart =
+        cardTop - stackPositionPx - ITEM_STACK_DISTANCE * index;
+      const triggerEnd = cardTop - scaleEndPositionPx;
+      const pinStart = triggerStart;
+      const pinEnd = endElementTop - containerHeight / 2;
 
-      const cardTop = naturalTopsRef.current[index] ?? 0;
-      const triggerStart = cardTop - stackPosition - 30 * index;
-      const triggerEnd = cardTop - scaleEndPosition;
-      const progress = clamp(
-        (scrollTop - triggerStart) /
-          Math.max(triggerEnd - triggerStart, 1),
+      const scaleProgress = calculateProgress(
+        scrollTop,
+        triggerStart,
+        triggerEnd,
       );
-      const targetScale = 0.85 + index * 0.03;
-      const scale = 1 - progress * (1 - targetScale);
+      const targetScale = BASE_SCALE + index * ITEM_SCALE;
+      const scale = 1 - scaleProgress * (1 - targetScale);
+      const rotation = ROTATION_AMOUNT
+        ? index * ROTATION_AMOUNT * scaleProgress
+        : 0;
 
-      card.style.transform = `translateZ(0) scale(${scale.toFixed(4)})`;
+      let blur = 0;
+      if (BLUR_AMOUNT) {
+        let topCardIndex = 0;
+        cardsRef.current.forEach((candidate, candidateIndex) => {
+          const candidateTrigger =
+            candidate.offsetTop -
+            stackPositionPx -
+            ITEM_STACK_DISTANCE * candidateIndex;
+          if (scrollTop >= candidateTrigger) {
+            topCardIndex = candidateIndex;
+          }
+        });
+
+        if (index < topCardIndex) {
+          blur = Math.max(0, (topCardIndex - index) * BLUR_AMOUNT);
+        }
+      }
+
+      let translateY = 0;
+      if (scrollTop >= pinStart && scrollTop <= pinEnd) {
+        translateY =
+          scrollTop -
+          cardTop +
+          stackPositionPx +
+          ITEM_STACK_DISTANCE * index;
+      } else if (scrollTop > pinEnd) {
+        translateY =
+          pinEnd -
+          cardTop +
+          stackPositionPx +
+          ITEM_STACK_DISTANCE * index;
+      }
+
+      const nextTransform: CardTransform = {
+        translateY: Math.round(translateY * 100) / 100,
+        scale: Math.round(scale * 1000) / 1000,
+        rotation: Math.round(rotation * 100) / 100,
+        blur: Math.round(blur * 100) / 100,
+      };
+      const previousTransform = lastTransformsRef.current.get(index);
+      const hasChanged =
+        !previousTransform ||
+        Math.abs(previousTransform.translateY - nextTransform.translateY) >
+          0.1 ||
+        Math.abs(previousTransform.scale - nextTransform.scale) > 0.001 ||
+        Math.abs(previousTransform.rotation - nextTransform.rotation) > 0.1 ||
+        Math.abs(previousTransform.blur - nextTransform.blur) > 0.1;
+
+      if (hasChanged) {
+        card.style.transform = `translate3d(0, ${nextTransform.translateY}px, 0) scale(${nextTransform.scale}) rotate(${nextTransform.rotation}deg)`;
+        card.style.filter =
+          nextTransform.blur > 0 ? `blur(${nextTransform.blur}px)` : "";
+        lastTransformsRef.current.set(index, nextTransform);
+      }
     });
+
+    isUpdatingRef.current = false;
   }, []);
 
-  const requestUpdate = useCallback(() => {
-    window.cancelAnimationFrame(animationFrameRef.current);
-    animationFrameRef.current = window.requestAnimationFrame(update);
-  }, [update]);
+  useLayoutEffect(() => {
+    const scroller = scrollerRef.current;
+    if (!scroller) return;
 
-  useEffect(() => {
-    const stack = stackRef.current;
-    if (!stack) return;
+    const cards = Array.from(
+      scroller.querySelectorAll<HTMLDivElement>(".scroll-stack-card"),
+    );
+    cardsRef.current = cards;
 
-    const refresh = () => {
-      measure();
-      requestUpdate();
-    };
-    const resizeObserver = new ResizeObserver(refresh);
-    resizeObserver.observe(stack);
-    cardsRef.current.forEach((card) => {
-      if (card) resizeObserver.observe(card);
+    if (!stackEnabled) {
+      cards.forEach((card) => {
+        card.style.marginBottom = "";
+        card.style.transform = "none";
+        card.style.filter = "";
+        card.style.willChange = "auto";
+      });
+      lastTransformsRef.current.clear();
+      return;
+    }
+
+    cards.forEach((card, index) => {
+      if (index < cards.length - 1) {
+        card.style.marginBottom = `${ITEM_DISTANCE}px`;
+      }
+      card.style.willChange = "transform, filter";
+      card.style.transformOrigin = "top center";
+      card.style.backfaceVisibility = "hidden";
+      card.style.transform = "translateZ(0)";
+      card.style.webkitTransform = "translateZ(0)";
+      card.style.perspective = "1000px";
+      card.style.webkitPerspective = "1000px";
     });
 
-    refresh();
-    window.addEventListener("scroll", requestUpdate, { passive: true });
-    window.addEventListener("resize", refresh);
+    const handleScroll = () => updateCardTransforms();
+    const lenis = new Lenis({
+      wrapper: scroller,
+      content: scroller.querySelector<HTMLElement>(".scroll-stack-inner")!,
+      duration: 1.2,
+      easing: (time) =>
+        Math.min(1, 1.001 - Math.pow(2, -10 * time)),
+      smoothWheel: true,
+      touchMultiplier: 2,
+      infinite: false,
+      gestureOrientation: "vertical",
+      wheelMultiplier: 1,
+      lerp: 0.1,
+      syncTouch: true,
+      syncTouchLerp: 0.075,
+      touchInertiaExponent: 1.7,
+      overscroll: true,
+    });
+
+    const handleBoundaryWheel = (event: WheelEvent) => {
+      const atTop =
+        lenis.targetScroll <= 1 && lenis.animatedScroll <= 1;
+      const atBottom =
+        lenis.targetScroll >= lenis.limit - 1 &&
+        lenis.animatedScroll >= lenis.limit - 2;
+      const leavingAtTop = event.deltaY < 0 && atTop;
+      const leavingAtBottom = event.deltaY > 0 && atBottom;
+
+      if (!leavingAtTop && !leavingAtBottom) return;
+
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      window.scrollBy({
+        top: event.deltaY,
+        left: 0,
+        behavior: "auto",
+      });
+    };
+
+    scroller.addEventListener("wheel", handleBoundaryWheel, {
+      capture: true,
+      passive: false,
+    });
+    lenis.on("scroll", handleScroll);
+    lenisRef.current = lenis;
+
+    const animate = (time: number) => {
+      lenis.raf(time);
+      animationFrameRef.current = window.requestAnimationFrame(animate);
+    };
+
+    const resizeObserver = new ResizeObserver(() => {
+      lenis.resize();
+      lastTransformsRef.current.clear();
+      updateCardTransforms();
+    });
+    resizeObserver.observe(scroller);
+    cards.forEach((card) => resizeObserver.observe(card));
+
+    animationFrameRef.current = window.requestAnimationFrame(animate);
+    updateCardTransforms();
 
     return () => {
-      window.cancelAnimationFrame(animationFrameRef.current);
+      if (animationFrameRef.current !== null) {
+        window.cancelAnimationFrame(animationFrameRef.current);
+      }
       resizeObserver.disconnect();
-      window.removeEventListener("scroll", requestUpdate);
-      window.removeEventListener("resize", refresh);
+      scroller.removeEventListener("wheel", handleBoundaryWheel, {
+        capture: true,
+      });
+      lenis.destroy();
+      lenisRef.current = null;
+      cardsRef.current = [];
+      lastTransformsRef.current.clear();
+      isUpdatingRef.current = false;
     };
-  }, [measure, requestUpdate]);
+  }, [stackEnabled, updateCardTransforms]);
 
   return (
-    <div className="experience-stack" ref={stackRef}>
-      {items.map((item, index) => (
-        <div
-          className="experience-card-shell"
-          key={item.company}
-          ref={(shell) => {
-            shellsRef.current[index] = shell;
-          }}
-          style={
-            {
-              "--stack-offset": `${index * 30}px`,
-              zIndex: index + 1,
-            } as CSSProperties
-          }
-        >
-          <details
-            className="experience-card"
-            onToggle={() => window.requestAnimationFrame(measure)}
-            ref={(card) => {
-              cardsRef.current[index] = card;
-            }}
+    <div
+      className={`scroll-stack-scroller${stackEnabled ? " is-enabled" : ""}`}
+      ref={scrollerRef}
+      aria-label="Experience timeline"
+      tabIndex={stackEnabled ? 0 : undefined}
+    >
+      <div className="scroll-stack-inner">
+        {items.map((item) => (
+          <div
+            className="scroll-stack-card"
+            key={item.company}
             style={
               {
                 "--experience-color": item.color,
               } as CSSProperties
             }
-          >
-            <summary>
-              <i />
-              <div className="exp-copy">
-                <h3>
-                  {item.company}
-                  {item.current && <span>Current</span>}
-                </h3>
-                <p>{item.role}</p>
-              </div>
-              <div className="exp-date">
-                <strong>{item.date}</strong>
-                <span>expand</span>
-              </div>
-            </summary>
-            <p className="exp-detail">
-              Focused on interaction systems, user journeys and product
-              experience across complex digital products.
-            </p>
-          </details>
-        </div>
-      ))}
-      <div className="experience-stack-end" aria-hidden="true" />
+            >
+            <details className="experience-card">
+              <summary
+                onKeyDown={(event) => {
+                  if (event.key !== "Enter" && event.key !== " ") return;
+                  event.preventDefault();
+                  const details = event.currentTarget
+                    .parentElement as HTMLDetailsElement;
+                  details.open = !details.open;
+                }}
+              >
+                <i />
+                <div className="exp-copy">
+                  <h3>
+                    {item.company}
+                    {item.current && <span>Current</span>}
+                  </h3>
+                  <p>{item.role}</p>
+                </div>
+                <div className="exp-date">
+                  <strong>{item.date}</strong>
+                  <span>expand</span>
+                </div>
+              </summary>
+              <p className="exp-detail">
+                Focused on interaction systems, user journeys and product
+                experience across complex digital products.
+              </p>
+            </details>
+          </div>
+        ))}
+        <div className="scroll-stack-end" aria-hidden="true" />
+      </div>
     </div>
   );
 }
