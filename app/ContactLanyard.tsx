@@ -220,7 +220,7 @@ function StaticLanyard() {
 }
 
 export default function ContactLanyard({
-  position = [0, 0, 15],
+  position = [0, 0, 22],
   gravity = [0, -40, 0],
   fov = 20,
   frontImage = null,
@@ -229,9 +229,12 @@ export default function ContactLanyard({
   lanyardImage = null,
   lanyardWidth = 1,
 }: ContactLanyardProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isCompact, setIsCompact] = useState(false);
   const [useStatic, setUseStatic] = useState(false);
+  const [hasDropped, setHasDropped] = useState(false);
 
   useEffect(() => {
     const reducedMotion = window.matchMedia(
@@ -244,6 +247,7 @@ export default function ContactLanyard({
         probe.getContext("webgl2") || probe.getContext("webgl"),
       );
       setIsMobile(window.innerWidth < 768);
+      setIsCompact(window.innerWidth < 1025);
       setUseStatic(reducedMotion.matches || !hasWebGL);
       setMounted(true);
     };
@@ -257,6 +261,24 @@ export default function ContactLanyard({
       window.removeEventListener("resize", updateMode);
     };
   }, []);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container || hasDropped) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.32) {
+          setHasDropped(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: [0.32] },
+    );
+
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, [hasDropped]);
 
   const generatedFront = useMemo(
     () => (mounted ? createCardTexture("front") : BLANK_PIXEL),
@@ -275,6 +297,7 @@ export default function ContactLanyard({
 
   return (
     <div
+      ref={containerRef}
       className="contact-lanyard"
       role="img"
       aria-label="Interactive identity badge. Drag the badge and release it to watch it swing back."
@@ -285,7 +308,12 @@ export default function ContactLanyard({
         <LanyardErrorBoundary fallback={fallback}>
           <Suspense fallback={fallback}>
             <Canvas
-              camera={{ position, fov }}
+              camera={{
+                position: isMobile
+                  ? [position[0], position[1], position[2] * 1.25]
+                  : position,
+                fov,
+              }}
               dpr={[1, isMobile ? 1.5 : 2]}
               gl={{ alpha: true, antialias: !isMobile }}
               onCreated={({ gl }) =>
@@ -295,10 +323,12 @@ export default function ContactLanyard({
               <ambientLight intensity={Math.PI} />
               <Physics
                 gravity={gravity}
+                paused={!hasDropped}
                 timeStep={isMobile ? 1 / 30 : 1 / 60}
               >
                 <Band
                   isMobile={isMobile}
+                  horizontalOffset={isCompact ? 0 : 2.2}
                   frontImage={frontImage || generatedFront}
                   backImage={backImage || generatedBack}
                   imageFit={imageFit}
@@ -351,6 +381,7 @@ type BandProps = {
   maxSpeed?: number;
   minSpeed?: number;
   isMobile?: boolean;
+  horizontalOffset?: number;
   frontImage: string;
   backImage: string;
   imageFit: "cover" | "contain";
@@ -366,6 +397,7 @@ function Band({
   maxSpeed = 50,
   minSpeed = 0,
   isMobile = false,
+  horizontalOffset = 0,
   frontImage,
   backImage,
   imageFit,
@@ -555,7 +587,7 @@ function Band({
 
   return (
     <>
-      <group position={[0, 4, 0]}>
+      <group position={[horizontalOffset, 4, 0]}>
         <RigidBody ref={fixed} {...segmentProps} type="fixed" />
         <RigidBody
           position={[0.5, 0, 0]}
