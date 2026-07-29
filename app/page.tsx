@@ -193,8 +193,8 @@ export default function Home() {
                   <strong>
                     <CountUp
                       to={Number(value)}
-                      delay={index * 0.12}
-                      duration={2}
+                      delay={index * 0.08}
+                      duration={1.15}
                     />
                     {suffix}
                   </strong>

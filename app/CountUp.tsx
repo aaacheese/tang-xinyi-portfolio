@@ -30,9 +30,11 @@ export default function CountUp({
 }: CountUpProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const motionValue = useMotionValue(direction === "down" ? to : from);
-  const damping = 20 + 40 * (1 / duration);
-  const stiffness = 100 * (1 / duration);
-  const springValue = useSpring(motionValue, { damping, stiffness });
+  const springValue = useSpring(motionValue, {
+    damping: 28,
+    stiffness: 170,
+    mass: 0.8,
+  });
   const isInView = useInView(ref, { once: false, margin: "0px" });
 
   const getDecimalPlaces = (value: number) => {
