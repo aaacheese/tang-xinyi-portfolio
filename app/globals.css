@@ -163,6 +163,36 @@ main {
   height: 100%;
 }
 
+.story-anchor {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.story-anchor-hero {
+  position: absolute;
+  left: 50%;
+  top: 18.7%;
+  width: 290px;
+  height: 429px;
+  transform: translateX(-50%);
+}
+
+.story-anchor-contents {
+  position: absolute;
+  right: 9%;
+  top: 41%;
+  width: 470px;
+  height: 342px;
+}
+
+.story-anchor-about {
+  position: absolute;
+  left: calc(-224px + 1.5cm);
+  top: -260px;
+  width: 560px;
+  height: 746px;
+}
+
 .story-hero {
   opacity: 1;
   transform: rotateY(0deg);
@@ -299,6 +329,11 @@ main {
   .story-about {
     animation-name: portavia-story-about;
   }
+}
+
+.story-card,
+.story-face {
+  animation: none !important;
 }
 
 .hero {
@@ -1033,6 +1068,16 @@ main {
 }
 
 @media (min-width: 1155px) {
+  .story-anchor-hero {
+    left: calc(50% - min(50vw, 662.5px) + 676px);
+    width: 370px;
+    height: 513px;
+  }
+
+  .story-anchor-contents {
+    right: calc(50% - min(50vw, 662.5px) + 120px);
+  }
+
   .story-card {
     --story-hero-left: calc(50% - min(50vw, 662.5px) + 676px);
     --story-hero-width: 370px;
@@ -1096,6 +1141,12 @@ main {
 }
 
 @media (min-width: 1600px) {
+  .story-anchor-contents {
+    right: calc(50% - min(50vw, 795px) + 144px);
+    width: 564px;
+    height: 410px;
+  }
+
   .story-card {
     --story-contents-left: calc(50% + 87px);
     --story-contents-width: 564px;
@@ -1132,6 +1183,26 @@ main {
 }
 
 @media (max-width: 760px) {
+  .story-anchor-hero {
+    left: 50%;
+    top: 145px;
+    width: 230px;
+    height: 340px;
+  }
+
+  .story-anchor-contents {
+    left: 6%;
+    right: auto;
+    top: 360px;
+    width: 88%;
+    height: 230px;
+  }
+
+  .story-anchor-about {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
   .story-card {
     --story-hero-left: 50%;
     --story-hero-top: 145px;

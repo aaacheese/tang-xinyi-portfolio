@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import StoryMotion from "./StoryMotion";
 
 export const metadata: Metadata = {
   title: "Tang Xinyi — UX & Interaction Designer",
@@ -119,6 +120,7 @@ export default function Home() {
       </aside>
 
       <div className="story-sequence">
+        <StoryMotion />
         <div className="story-visual">
           <div className="story-card">
             <div className="story-face story-hero">
@@ -135,6 +137,7 @@ export default function Home() {
 
       <section className="hero" id="top">
         <div className="grid-noise" />
+        <div className="story-anchor story-anchor-hero" aria-hidden="true" />
         <div className="hero-name hero-first">Tang</div>
         <div className="hero-name hero-last">Xinyi</div>
         <div className="role-sticker">Interaction Designer</div>
@@ -163,6 +166,7 @@ export default function Home() {
             ))}
           </div>
         </div>
+        <div className="story-anchor story-anchor-contents" aria-hidden="true" />
       </section>
 
       <section className="about section" id="about">
@@ -195,6 +199,7 @@ export default function Home() {
             </div>
           </div>
           <div className="about-photo">
+            <div className="story-anchor story-anchor-about" aria-hidden="true" />
             <span>Interaction Designer</span>
           </div>
         </div>
