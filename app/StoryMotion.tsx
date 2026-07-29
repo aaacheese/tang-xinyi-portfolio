@@ -68,6 +68,8 @@ export default function StoryMotion() {
     let hero: Frame;
     let contents: Frame;
     let about: Frame;
+    let lockedAbout: Frame;
+    let portraitLocked = false;
     let aboutLabelX = 0;
     let aboutLabelY = 0;
     let aboutLabelScale = 1;
@@ -98,6 +100,8 @@ export default function StoryMotion() {
       hero = measure(heroAnchor, heroSection, 30, -6.79);
       contents = measure(contentsAnchor, contentsSection, 30, 4.51);
       about = measure(aboutAnchor, aboutSection, 0, 0);
+      lockedAbout = { ...about };
+      portraitLocked = false;
       const aboutLabelRect = aboutLabelAnchor.getBoundingClientRect();
       const aboutSectionRect = aboutSection.getBoundingClientRect();
       aboutLabelX = aboutLabelRect.left;
@@ -131,10 +135,14 @@ export default function StoryMotion() {
           );
       const inSecondTransition = scroll >= contentsStart;
       const progress = inSecondTransition ? secondProgress : firstProgress;
-      const frame = inSecondTransition
+      const frame = hasArrived
+        ? lockedAbout
+        : inSecondTransition
         ? mixFrame(contents, about, progress)
         : mixFrame(hero, contents, progress);
-      const angle = inSecondTransition
+      const angle = hasArrived
+        ? 360
+        : inSecondTransition
         ? lerp(180, 360, progress)
         : lerp(0, 180, progress);
       const scale = hasArrived
@@ -155,12 +163,23 @@ export default function StoryMotion() {
       visual.style.right = "0";
       visual.style.width = "100%";
       card.style.position = "absolute";
-      card.style.left = `${frame.x}px`;
-      card.style.top = `${frame.y}px`;
-      card.style.width = `${frame.width}px`;
-      card.style.height = `${frame.height}px`;
-      card.style.borderRadius = `${frame.radius}px`;
-      card.style.transform = `perspective(1200px) scale(${scale}) rotate(${tilt}deg) rotateY(${angle}deg)`;
+
+      if (!hasArrived) {
+        portraitLocked = false;
+      }
+
+      // Apply the screenshot-matched final frame once. Subsequent scroll
+      // events may change visibility, but never rewrite portrait geometry.
+      if (!portraitLocked) {
+        card.style.left = `${frame.x}px`;
+        card.style.top = `${frame.y}px`;
+        card.style.width = `${frame.width}px`;
+        card.style.height = `${frame.height}px`;
+        card.style.borderRadius = `${frame.radius}px`;
+        card.style.transform = `perspective(1200px) scale(${scale}) rotate(${tilt}deg) rotateY(${angle}deg)`;
+        portraitLocked = hasArrived;
+      }
+
       card.style.opacity = isPastAbout ? "0" : "1";
       aboutLabel.style.left = `${aboutLabelX}px`;
       aboutLabel.style.top = `${aboutLabelY}px`;
