@@ -268,12 +268,12 @@ export default function ContactLanyard({
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && entry.intersectionRatio >= 0.32) {
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.52) {
           setHasDropped(true);
           observer.disconnect();
         }
       },
-      { threshold: [0.32] },
+      { threshold: [0.52] },
     );
 
     observer.observe(container);
@@ -424,9 +424,9 @@ function Band({
       if (!card.current) return;
       hasAppliedDropImpulse.current = true;
       card.current.wakeUp();
-      card.current.applyImpulse({ x: -5.5, y: -9, z: 1.4 }, true);
+      card.current.applyImpulse({ x: -2.8, y: -5.2, z: 0.8 }, true);
       card.current.applyTorqueImpulse(
-        { x: 0.6, y: -0.8, z: -2.8 },
+        { x: 0.3, y: -0.4, z: -1.3 },
         true,
       );
     });
@@ -457,8 +457,8 @@ function Band({
     type: "dynamic",
     canSleep: true,
     colliders: false,
-    angularDamping: 4,
-    linearDamping: 4,
+    angularDamping: 5.5,
+    linearDamping: 5.5,
   };
 
   const { nodes, materials } = useGLTF(CARD_MODEL) as any;
@@ -608,7 +608,7 @@ function Band({
 
   return (
     <>
-      <group position={[horizontalOffset, 4, 0]}>
+      <group visible={isReleased} position={[horizontalOffset, 4, 0]}>
         <RigidBody ref={fixed} {...segmentProps} type="fixed" />
         <RigidBody
           position={[0.5, 0, 0]}
@@ -685,7 +685,7 @@ function Band({
           </group>
         </RigidBody>
       </group>
-      <mesh ref={band}>
+      <mesh ref={band} visible={isReleased}>
         <meshLineGeometry />
         <meshLineMaterial
           args={[
