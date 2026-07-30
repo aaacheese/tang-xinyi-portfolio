@@ -15,7 +15,8 @@ const contents = [
   ["01", "About Me", "#about"],
   ["02", "Experience", "#experience"],
   ["03", "Projects", "#projects"],
-  ["04", "More", "#contact"],
+  ["04", "Skills & Strengths", "#skills"],
+  ["05", "Contact", "#contact"],
 ];
 
 const experience = [
