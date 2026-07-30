@@ -904,7 +904,6 @@ main {
 
 .project-wheel-image {
   object-fit: cover;
-  filter: grayscale(100%);
   pointer-events: none;
 }
 

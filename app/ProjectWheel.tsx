@@ -12,9 +12,98 @@ type ProjectWheelProps = {
   items?: ProjectItem[];
 };
 
-const BASE_PROJECTS: ProjectItem[] = Array.from({ length: 9 }, (_, index) => ({
-  id: `project-${index + 1}`,
-}));
+const BASE_PROJECTS: ProjectItem[] = [
+  {
+    id: "project-01",
+    imageSrc: "/assets/projects/01.png",
+    alt: "熊猫选娃 AI 智能识别挑选孩子照片项目",
+  },
+  {
+    id: "project-02",
+    imageSrc: "/assets/projects/02.png",
+    alt: "习惯猫儿童行为习惯培养平台设计",
+  },
+  {
+    id: "project-03",
+    imageSrc: "/assets/projects/03.png",
+    alt: "AA班级助手教师班级管理产品",
+  },
+  {
+    id: "project-04",
+    imageSrc: "/assets/projects/04.png",
+    alt: "春风好轻松宣健共创市集视觉设计",
+  },
+  {
+    id: "project-05",
+    imageSrc: "/assets/projects/05.png",
+    alt: "挥毫落纸智能书法辅助工具",
+  },
+  {
+    id: "project-06",
+    imageSrc: "/assets/projects/06.png",
+    alt: "华帝智能烹饪产品界面设计",
+  },
+  {
+    id: "project-07",
+    imageSrc: "/assets/projects/07.png",
+    alt: "Janor's Shop 童趣商店三维场景设计",
+  },
+  {
+    id: "project-08",
+    imageSrc: "/assets/projects/08.png",
+    alt: "智愈奇旅儿童人体器官科普游戏",
+  },
+  {
+    id: "project-09",
+    imageSrc: "/assets/projects/09.png",
+    alt: "文洪机械产品视觉展示设计",
+  },
+  {
+    id: "project-10",
+    imageSrc: "/assets/projects/10.png",
+    alt: "智能制冷保鲜加热餐吧产品设计",
+  },
+  {
+    id: "project-11",
+    imageSrc: "/assets/projects/11.png",
+    alt: "春风好轻松音乐主题品牌视觉设计",
+  },
+  {
+    id: "project-12",
+    imageSrc: "/assets/projects/12.png",
+    alt: "Hisense 智能设备概念设计",
+  },
+  {
+    id: "project-13",
+    imageSrc: "/assets/projects/13.png",
+    alt: "Body Quest 儿童科普角色插画",
+  },
+  {
+    id: "project-14",
+    imageSrc: "/assets/projects/14.png",
+    alt: "Monday Canteen 双代际城市移民服务系统设计",
+  },
+  {
+    id: "project-15",
+    imageSrc: "/assets/projects/15.png",
+    alt: "Talk Horn 特殊扩音器产品设计",
+  },
+  {
+    id: "project-16",
+    imageSrc: "/assets/projects/16.png",
+    alt: "Hisense 智能设备外观设计",
+  },
+  {
+    id: "project-17",
+    imageSrc: "/assets/projects/17.png",
+    alt: "智愈奇旅水下场景插画",
+  },
+  {
+    id: "project-18",
+    imageSrc: "/assets/projects/18.png",
+    alt: "智能摄像设备工业设计",
+  },
+];
 
 export default function ProjectWheel({
   items = BASE_PROJECTS,
@@ -23,10 +112,8 @@ export default function ProjectWheel({
   const wheelRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<Array<HTMLDivElement | null>>([]);
 
-  const wheelItems = [...items, ...items].map((item, index) => ({
-    ...item,
-    instanceId: `${item.id}-${index < items.length ? "a" : "b"}`,
-  }));
+  const wheelItems =
+    items.length > 1 ? [...items.slice(1), items[0]] : items;
 
   useEffect(() => {
     let disposed = false;
@@ -209,7 +296,7 @@ export default function ProjectWheel({
         <div
           className="project-wheel-items"
           ref={wheelRef}
-          role="group"
+          role="list"
           aria-label="Drag the project cards to rotate the gallery"
           tabIndex={0}
           onKeyDown={(event) => {
@@ -226,11 +313,12 @@ export default function ProjectWheel({
           {wheelItems.map((item, index) => (
             <div
               className="project-wheel-item"
-              key={item.instanceId}
+              key={item.id}
+              role="listitem"
+              data-project-number={item.id.replace("project-", "")}
               ref={(node) => {
                 itemRefs.current[index] = node;
               }}
-              aria-hidden="true"
             >
               <div className="project-wheel-card">
                 {item.imageSrc ? (
