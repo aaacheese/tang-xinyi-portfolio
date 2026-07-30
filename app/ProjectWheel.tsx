@@ -149,7 +149,7 @@ export default function ProjectWheel({
             y: 0,
             opacity: 1,
             scale: 1,
-            transformOrigin: "center 200vh",
+            transformOrigin: "center 180vh",
             rotation:
               index > total / 2
                 ? -degree * (total - index)
@@ -197,7 +197,7 @@ export default function ProjectWheel({
           timeline!.to(
             card,
             {
-              transformOrigin: "center 200vh",
+              transformOrigin: "center 180vh",
               rotation:
                 index > total / 2
                   ? -degree * (total - index)

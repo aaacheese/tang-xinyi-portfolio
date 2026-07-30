@@ -850,7 +850,7 @@ main {
   display: flex;
   outline: none;
   transform: rotate(0deg);
-  transform-origin: center 200vh;
+  transform-origin: center 180vh;
   user-select: none;
 }
 
@@ -882,7 +882,7 @@ main {
   height: 610px;
   overflow: hidden;
   border: 10px solid #000;
-  border-radius: 17px;
+  border-radius: 25px;
   background: #e7e3da;
   color: #fff;
   cursor: grab;
@@ -1708,7 +1708,7 @@ main {
     width: min(300px, 78vw);
     height: min(400px, 104vw);
     border-width: 8px;
-    border-radius: 15px;
+    border-radius: 25px;
   }
 
   .project-wheel-items:focus-visible::after {
