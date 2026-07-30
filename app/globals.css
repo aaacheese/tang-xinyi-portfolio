@@ -226,8 +226,8 @@ main {
 .gooey-particle,
 .gooey-point {
   display: block;
-  width: 20px;
-  height: 20px;
+  width: 12px;
+  height: 12px;
   border-radius: 100%;
   opacity: 0;
   transform-origin: center;
@@ -235,8 +235,8 @@ main {
 
 .gooey-particle {
   position: absolute;
-  top: calc(50% - 8px);
-  left: calc(50% - 8px);
+  top: calc(50% - 6px);
+  left: calc(50% - 6px);
   animation: gooey-particle var(--time) ease 1 -350ms;
 }
 
@@ -279,14 +279,20 @@ main {
   25% {
     transform: scale(calc(var(--scale) * 0.25));
   }
-  38%,
-  85% {
+  38% {
     opacity: 1;
   }
   65% {
     opacity: 1;
     transform: scale(var(--scale));
     animation-timing-function: ease;
+  }
+  75% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 0.45;
+    transform: scale(calc(var(--scale) * 0.35));
   }
   100% {
     opacity: 0;
