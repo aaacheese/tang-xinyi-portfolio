@@ -82,6 +82,7 @@ main {
 }
 
 .gooey-nav-container {
+  --gooey-rest: #caff00;
   --gooey-color-1: var(--acid);
   --gooey-color-2: #f2ede4;
   --gooey-color-3: #8ea926;
@@ -137,7 +138,7 @@ main {
   inset: 0;
   z-index: -1;
   border-radius: 100vw;
-  background: var(--acid);
+  background: var(--gooey-rest);
   opacity: 0;
   transform: scale(0);
   transition:
@@ -203,7 +204,7 @@ main {
   inset: 0;
   z-index: -1;
   border-radius: 100vw;
-  background: var(--acid);
+  background: var(--gooey-rest);
   opacity: 0;
   transform: scale(0);
 }
