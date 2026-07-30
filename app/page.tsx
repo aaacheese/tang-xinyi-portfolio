@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import CountUp from "./CountUp";
 import ContactLanyard from "./ContactLanyard";
 import ExperienceStack from "./ExperienceStack";
+import ProjectWheel from "./ProjectWheel";
 import StoryMotion from "./StoryMotion";
 
 export const metadata: Metadata = {
@@ -13,7 +14,7 @@ export const metadata: Metadata = {
 const contents = [
   ["01", "About Me", "#about"],
   ["02", "Experience", "#experience"],
-  ["03", "Projects", "#skills"],
+  ["03", "Projects", "#projects"],
   ["04", "More", "#contact"],
 ];
 
@@ -101,7 +102,7 @@ export default function Home() {
           <a href="#contents">Contents</a>
           <a href="#about">About</a>
           <a href="#experience">Experience</a>
-          <a href="#skills">Projects</a>
+          <a href="#projects">Projects</a>
           <a href="#skills">Skills</a>
           <a href="#contact">Contact</a>
         </nav>
@@ -115,7 +116,7 @@ export default function Home() {
         {["Contents", "About", "Experience", "Projects", "Skills", "Contact"].map(
           (item) => (
             <a
-              href={`#${item === "Projects" ? "skills" : item.toLowerCase()}`}
+              href={`#${item.toLowerCase()}`}
               key={item}
             >
               {item}
@@ -234,6 +235,11 @@ export default function Home() {
       <section className="experience section" id="experience">
         <SectionLabel>02 · Experience</SectionLabel>
         <ExperienceStack items={experience} />
+      </section>
+
+      <section className="projects section" id="projects">
+        <SectionLabel>03 · Projects</SectionLabel>
+        <ProjectWheel />
       </section>
 
       <section className="skills section" id="skills">

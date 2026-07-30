@@ -810,9 +810,170 @@ main {
   height: 55vh;
 }
 
+.projects {
+  position: relative;
+  z-index: 4;
+  height: 100svh;
+  min-height: 700px;
+  padding: 0 64px;
+  overflow: hidden;
+  background: var(--black);
+  isolation: isolate;
+}
+
+.projects > .section-label {
+  position: absolute;
+  z-index: 4;
+  top: 64px;
+  left: 64px;
+  right: 64px;
+  width: auto;
+}
+
+.project-wheel-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  user-select: none;
+}
+
+.project-wheel-center {
+  position: absolute;
+  left: 50%;
+  top: 28%;
+  height: 100svh;
+  transform: translateX(-50%);
+  user-select: none;
+}
+
+.project-wheel-items {
+  display: flex;
+  outline: none;
+  transform: rotate(0deg);
+  transform-origin: center 200vh;
+  user-select: none;
+}
+
+.project-wheel-items:focus-visible::after {
+  content: "";
+  position: absolute;
+  left: -225px;
+  top: -5px;
+  width: 450px;
+  height: 630px;
+  border: 1px solid var(--acid);
+  border-radius: 22px;
+  pointer-events: none;
+}
+
+.project-wheel-item {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  transform: translateX(-50%);
+  user-select: none;
+  will-change: transform;
+}
+
+.project-wheel-card {
+  position: relative;
+  display: block;
+  width: 430px;
+  height: 610px;
+  overflow: hidden;
+  border: 10px solid #000;
+  border-radius: 17px;
+  background: #e7e3da;
+  color: #fff;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.project-wheel-card:active {
+  cursor: grabbing;
+}
+
+.project-wheel-image,
+.project-wheel-placeholder {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.project-wheel-image {
+  object-fit: cover;
+  filter: grayscale(100%);
+  pointer-events: none;
+}
+
+.project-wheel-placeholder {
+  background:
+    linear-gradient(rgba(8, 8, 8, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(8, 8, 8, 0.07) 1px, transparent 1px),
+    linear-gradient(145deg, #f2ede4, #bab4a9);
+  background-size: 30px 30px, 30px 30px, 100% 100%;
+}
+
+.project-wheel-item:nth-child(3n + 2) .project-wheel-placeholder {
+  background:
+    linear-gradient(rgba(8, 8, 8, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(8, 8, 8, 0.06) 1px, transparent 1px),
+    linear-gradient(145deg, #c7c2b8, #f2ede4);
+  background-size: 30px 30px, 30px 30px, 100% 100%;
+}
+
+.project-wheel-item:nth-child(3n) .project-wheel-placeholder {
+  background:
+    linear-gradient(rgba(8, 8, 8, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(8, 8, 8, 0.055) 1px, transparent 1px),
+    linear-gradient(145deg, #ddd8ce, #9e988e);
+  background-size: 30px 30px, 30px 30px, 100% 100%;
+}
+
+.project-wheel-hint {
+  position: absolute;
+  z-index: 4;
+  right: 64px;
+  bottom: 44px;
+  margin: 0;
+  color: var(--muted);
+  font: 500 10px/16px "DM Mono", monospace;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
 .skills {
   height: 1275.5px;
   background: var(--panel);
+}
+
+@media screen and (max-height: 1000px) {
+  .project-wheel-card {
+    width: 350px;
+    height: 497px;
+  }
+
+  .project-wheel-items:focus-visible::after {
+    left: -185px;
+    width: 370px;
+    height: 517px;
+  }
+}
+
+@media screen and (max-height: 800px) {
+  .project-wheel-card {
+    width: 300px;
+    height: 400px;
+  }
+
+  .project-wheel-items:focus-visible::after {
+    left: -160px;
+    width: 320px;
+    height: 420px;
+  }
 }
 
 .skills-heading {
@@ -1528,6 +1689,40 @@ main {
     height: 0;
   }
 
+  .projects {
+    height: 100svh;
+    min-height: 650px;
+    padding: 0 24px;
+  }
+
+  .projects > .section-label {
+    top: 88px;
+    left: 24px;
+    right: 24px;
+  }
+
+  .project-wheel-center {
+    top: 30%;
+  }
+
+  .project-wheel-card {
+    width: min(300px, 78vw);
+    height: min(400px, 104vw);
+    border-width: 8px;
+    border-radius: 15px;
+  }
+
+  .project-wheel-items:focus-visible::after {
+    left: min(-39vw, -150px);
+    width: min(300px, 78vw);
+    height: min(400px, 104vw);
+  }
+
+  .project-wheel-hint {
+    right: 24px;
+    bottom: 28px;
+  }
+
   .skills-heading {
     align-items: flex-start;
     flex-direction: column;
@@ -1632,6 +1827,14 @@ main {
 
   .project-stack-end {
     height: 0;
+  }
+
+  .project-wheel-item {
+    opacity: 1;
+  }
+
+  .project-wheel-hint {
+    display: none;
   }
 
   .contact-lanyard canvas {
