@@ -125,6 +125,14 @@ export default function GooeyNav({
 
       timersRef.current.push(createTimer);
     }
+
+    const settleTimer = window.setTimeout(() => {
+      element.classList.remove("active");
+      element
+        .querySelectorAll(".gooey-particle")
+        .forEach((particle) => particle.remove());
+    }, bubbleTime + 30);
+    timersRef.current.push(settleTimer);
   };
 
   const activateItem = (element: HTMLElement, index: number) => {
