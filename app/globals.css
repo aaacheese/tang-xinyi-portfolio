@@ -57,6 +57,7 @@ main {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background: var(--black);
 }
 
 .brand {
@@ -192,7 +193,7 @@ main {
 .gooey-filter::before {
   content: "";
   position: absolute;
-  inset: -75px;
+  inset: -38px;
   z-index: -2;
   background: var(--black);
 }
