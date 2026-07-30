@@ -39,13 +39,13 @@ export default function TiltedSkillCard({
     const offsetX = event.clientX - rect.left - rect.width / 2;
     const offsetY = event.clientY - rect.top - rect.height / 2;
 
-    rotateX.set((offsetY / (rect.height / 2)) * -8);
-    rotateY.set((offsetX / (rect.width / 2)) * 8);
+    rotateX.set((offsetY / (rect.height / 2)) * -12);
+    rotateY.set((offsetX / (rect.width / 2)) * 12);
   };
 
   const handleMouseEnter = () => {
     if (!canAnimate()) return;
-    scale.set(1.04);
+    scale.set(1.08);
   };
 
   const handleMouseLeave = () => {
