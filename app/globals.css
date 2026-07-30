@@ -69,11 +69,9 @@ main {
 }
 
 .desktop-nav {
-  display: flex;
-  gap: 36px;
+  display: block;
 }
 
-.desktop-nav a,
 .menu-button {
   position: relative;
   color: var(--muted);
@@ -83,23 +81,213 @@ main {
   text-transform: uppercase;
 }
 
-.desktop-nav a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 100%;
-  bottom: -2px;
-  height: 1px;
-  background: var(--acid);
-  transition: right 0.25s ease;
+.gooey-nav-container {
+  --gooey-color-1: var(--acid);
+  --gooey-color-2: #f2ede4;
+  --gooey-color-3: #8ea926;
+  --gooey-color-4: #ffffff;
+  position: relative;
 }
 
-.desktop-nav a:hover {
+.gooey-nav-container nav {
+  position: relative;
+  display: flex;
+  transform: translate3d(0, 0, 0.01px);
+}
+
+.gooey-nav-container nav ul {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.gooey-nav-container nav li {
+  position: relative;
+  border-radius: 100vw;
+  color: var(--muted);
+  cursor: pointer;
+  transition:
+    color 0.3s ease,
+    box-shadow 0.3s ease;
+  box-shadow: 0 0 0.5px 1.5px transparent;
+}
+
+.gooey-nav-container nav li a {
+  position: relative;
+  display: inline-block;
+  padding: 9px 13px;
+  color: inherit;
+  font-size: 11px;
+  line-height: 17px;
+  letter-spacing: 2.2px;
+  text-transform: uppercase;
+}
+
+.gooey-nav-container nav li:focus-within:has(:focus-visible) {
+  box-shadow: 0 0 0.5px 1.5px var(--paper);
+}
+
+.gooey-nav-container nav li::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 100vw;
+  background: var(--acid);
+  opacity: 0;
+  transform: scale(0);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+
+.gooey-nav-container nav li:hover {
   color: var(--paper);
 }
 
-.desktop-nav a:hover::after {
-  right: 0;
+.gooey-nav-container nav li.active {
+  color: var(--black);
+}
+
+.gooey-nav-container nav li.active::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.gooey-effect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  display: grid;
+  width: 0;
+  height: 0;
+  place-items: center;
+  opacity: 1;
+  pointer-events: none;
+}
+
+.gooey-text {
+  color: var(--paper);
+  font-size: 11px;
+  line-height: 17px;
+  letter-spacing: 2.2px;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+}
+
+.gooey-text.active {
+  color: var(--black);
+}
+
+.gooey-filter {
+  filter: blur(7px) contrast(100) blur(0);
+  mix-blend-mode: lighten;
+}
+
+.gooey-filter::before {
+  content: "";
+  position: absolute;
+  inset: -75px;
+  z-index: -2;
+  background: var(--black);
+}
+
+.gooey-filter::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 100vw;
+  background: var(--acid);
+  opacity: 0;
+  transform: scale(0);
+}
+
+.gooey-effect.active::after {
+  animation: gooey-pill 0.3s ease both;
+}
+
+@keyframes gooey-pill {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.gooey-particle,
+.gooey-point {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
+  opacity: 0;
+  transform-origin: center;
+}
+
+.gooey-particle {
+  position: absolute;
+  top: calc(50% - 8px);
+  left: calc(50% - 8px);
+  animation: gooey-particle var(--time) ease 1 -350ms;
+}
+
+.gooey-point {
+  background: var(--color);
+  opacity: 1;
+  animation: gooey-point var(--time) ease 1 -350ms;
+}
+
+@keyframes gooey-particle {
+  0% {
+    opacity: 1;
+    transform: rotate(0deg) translate(var(--start-x), var(--start-y));
+    animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
+  }
+  70% {
+    opacity: 1;
+    transform: rotate(calc(var(--rotate) * 0.5))
+      translate(calc(var(--end-x) * 1.2), calc(var(--end-y) * 1.2));
+    animation-timing-function: ease;
+  }
+  85% {
+    opacity: 1;
+    transform: rotate(calc(var(--rotate) * 0.66))
+      translate(var(--end-x), var(--end-y));
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(calc(var(--rotate) * 1.2))
+      translate(calc(var(--end-x) * 0.5), calc(var(--end-y) * 0.5));
+  }
+}
+
+@keyframes gooey-point {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+    animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
+  }
+  25% {
+    transform: scale(calc(var(--scale) * 0.25));
+  }
+  38%,
+  85% {
+    opacity: 1;
+  }
+  65% {
+    opacity: 1;
+    transform: scale(var(--scale));
+    animation-timing-function: ease;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0);
+  }
 }
 
 .menu-toggle,

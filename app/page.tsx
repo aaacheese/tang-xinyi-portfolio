@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import CountUp from "./CountUp";
 import ContactLanyard from "./ContactLanyard";
 import ExperienceStack from "./ExperienceStack";
+import GooeyNav from "./GooeyNav";
 import ProjectWheel from "./ProjectWheel";
 import StoryMotion from "./StoryMotion";
 
@@ -17,6 +18,15 @@ const contents = [
   ["03", "Projects", "#projects"],
   ["04", "Skills & Strengths", "#skills"],
   ["05", "Contact", "#contact"],
+];
+
+const navigation = [
+  { label: "Contents", href: "#contents" },
+  { label: "About", href: "#about" },
+  { label: "Experience", href: "#experience" },
+  { label: "Projects", href: "#projects" },
+  { label: "Skills", href: "#skills" },
+  { label: "Contact", href: "#contact" },
 ];
 
 const experience = [
@@ -99,14 +109,12 @@ export default function Home() {
         <a className="brand" href="#top" aria-label="Back to top">
           TXY<span>.</span>
         </a>
-        <nav className="desktop-nav" aria-label="Primary navigation">
-          <a href="#contents">Contents</a>
-          <a href="#about">About</a>
-          <a href="#experience">Experience</a>
-          <a href="#projects">Projects</a>
-          <a href="#skills">Skills</a>
-          <a href="#contact">Contact</a>
-        </nav>
+        <GooeyNav
+          className="desktop-nav"
+          items={navigation}
+          particleCount={10}
+          particleR={200}
+        />
         <label className="menu-button" htmlFor="menu-toggle">
           <span className="open-copy">Menu</span>
           <span className="close-copy">Close</span>
