@@ -190,14 +190,6 @@ main {
   mix-blend-mode: lighten;
 }
 
-.gooey-filter::before {
-  content: "";
-  position: absolute;
-  inset: -38px;
-  z-index: -2;
-  background: var(--black);
-}
-
 .gooey-filter::after {
   content: "";
   position: absolute;
