@@ -190,6 +190,17 @@ main {
   mix-blend-mode: lighten;
 }
 
+.gooey-filter::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -2;
+  width: 100vw;
+  height: 68px;
+  background: var(--black);
+}
+
 .gooey-filter::after {
   content: "";
   position: absolute;
