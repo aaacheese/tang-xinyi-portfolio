@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Alex+Brush&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500&family=Fraunces:ital,wght@0,700;0,900;1,300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Alex+Brush&family=Antonio:wght@100..700&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500&family=Fraunces:ital,wght@0,700;0,900;1,300&display=swap");
 
 :root {
   --black: #080808;
@@ -363,7 +363,7 @@ main {
   position: absolute;
   z-index: 2;
   top: 46.5%;
-  font-family: "Fraunces", Georgia, serif;
+  font-family: "Antonio", sans-serif;
   font-size: clamp(112px, 12.2vw, 160px);
   line-height: 0.84;
   white-space: nowrap;
@@ -1112,7 +1112,7 @@ main {
 
 .contact-hero h2 {
   margin: 0;
-  font: 900 107px/1 "Fraunces", Georgia, serif;
+  font: 900 107px/1 "Antonio", sans-serif;
 }
 
 .contact-hero h2.outline {
