@@ -5,6 +5,7 @@ import ExperienceStack from "./ExperienceStack";
 import GooeyNav from "./GooeyNav";
 import ProjectWheel from "./ProjectWheel";
 import StoryMotion from "./StoryMotion";
+import TiltedSkillCard from "./TiltedSkillCard";
 
 export const metadata: Metadata = {
   title: "Tang Xinyi — UX & Interaction Designer",
@@ -264,7 +265,7 @@ export default function Home() {
         </div>
         <div className="skills-grid">
           {skills.map((skill, index) => (
-            <article key={skill.name}>
+            <TiltedSkillCard key={skill.name}>
               <div className="skill-top">
                 <span>{skill.glyph}</span>
                 <b>0{index + 1}</b>
@@ -277,7 +278,7 @@ export default function Home() {
                 ))}
               </div>
               <i className="card-line" />
-            </article>
+            </TiltedSkillCard>
           ))}
         </div>
       </section>

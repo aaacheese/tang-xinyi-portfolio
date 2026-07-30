@@ -82,7 +82,6 @@ main {
 }
 
 .gooey-nav-container {
-  --gooey-rest: #caff00;
   --gooey-color-1: var(--acid);
   --gooey-color-2: #f2ede4;
   --gooey-color-3: #8ea926;
@@ -138,7 +137,7 @@ main {
   inset: 0;
   z-index: -1;
   border-radius: 100vw;
-  background: var(--gooey-rest);
+  background: var(--acid);
   opacity: 0;
   transform: scale(0);
   transition:
@@ -204,7 +203,7 @@ main {
   inset: 0;
   z-index: -1;
   border-radius: 100vw;
-  background: var(--gooey-rest);
+  background: var(--acid);
   opacity: 0;
   transform: scale(0);
 }
@@ -1194,15 +1193,29 @@ main {
   gap: 1px;
 }
 
-.skills-grid article {
+.skills-grid .skill-tilt-shell {
   position: relative;
   min-height: 397px;
-  padding: 40px;
   background: var(--panel);
+  perspective: 800px;
 }
 
-.skills-grid article:nth-child(-n + 3) {
+.skills-grid .skill-tilt-shell:nth-child(-n + 3) {
   min-height: 428px;
+}
+
+.skill-tilt-shell:hover {
+  z-index: 2;
+}
+
+.skills-grid article {
+  position: relative;
+  height: 100%;
+  padding: 40px;
+  background: var(--panel);
+  transform-style: preserve-3d;
+  transform-origin: center;
+  will-change: transform;
 }
 
 .skill-top {
@@ -1930,9 +1943,12 @@ main {
     grid-template-columns: 1fr;
   }
 
-  .skills-grid article,
-  .skills-grid article:nth-child(-n + 3) {
+  .skills-grid .skill-tilt-shell,
+  .skills-grid .skill-tilt-shell:nth-child(-n + 3) {
     min-height: 380px;
+  }
+
+  .skills-grid article {
     padding: 32px;
   }
 
@@ -2023,6 +2039,11 @@ main {
 
   .project-wheel-hint {
     display: none;
+  }
+
+  .skill-tilt-card {
+    transform: none !important;
+    will-change: auto;
   }
 
   .contact-lanyard canvas {
