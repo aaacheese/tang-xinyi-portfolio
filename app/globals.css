@@ -57,7 +57,6 @@ main {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: var(--black);
 }
 
 .brand {
@@ -201,6 +200,14 @@ main {
   background: var(--black);
 }
 
+.gooey-filter::before {
+  content: "";
+  position: absolute;
+  inset: -75px;
+  z-index: -2;
+  background: var(--black);
+}
+
 .gooey-filter::after {
   content: "";
   position: absolute;
@@ -226,8 +233,8 @@ main {
 .gooey-particle,
 .gooey-point {
   display: block;
-  width: 12px;
-  height: 12px;
+  width: 20px;
+  height: 20px;
   border-radius: 100%;
   opacity: 0;
   transform-origin: center;
@@ -235,8 +242,8 @@ main {
 
 .gooey-particle {
   position: absolute;
-  top: calc(50% - 6px);
-  left: calc(50% - 6px);
+  top: calc(50% - 8px);
+  left: calc(50% - 8px);
   animation: gooey-particle var(--time) ease 1 -350ms;
 }
 
@@ -279,20 +286,14 @@ main {
   25% {
     transform: scale(calc(var(--scale) * 0.25));
   }
-  38% {
+  38%,
+  85% {
     opacity: 1;
   }
   65% {
     opacity: 1;
     transform: scale(var(--scale));
     animation-timing-function: ease;
-  }
-  75% {
-    opacity: 1;
-  }
-  88% {
-    opacity: 0.45;
-    transform: scale(calc(var(--scale) * 0.35));
   }
   100% {
     opacity: 0;
