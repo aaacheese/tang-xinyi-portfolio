@@ -1103,6 +1103,11 @@ a.project-stack-card:focus-visible {
   cursor: grabbing;
 }
 
+.project-wheel-card-link:focus-visible {
+  outline: 2px solid var(--acid);
+  outline-offset: 4px;
+}
+
 .project-wheel-image,
 .project-wheel-placeholder {
   position: absolute;

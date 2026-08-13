@@ -2,9 +2,13 @@
 
 type BackButtonProps = {
   className: string;
+  fallbackHref?: string;
 };
 
-export default function BackButton({ className }: BackButtonProps) {
+export default function BackButton({
+  className,
+  fallbackHref = "/#experience",
+}: BackButtonProps) {
   const handleBack = () => {
     const cameFromThisSite = (() => {
       if (!document.referrer) return false;
@@ -21,7 +25,7 @@ export default function BackButton({ className }: BackButtonProps) {
       return;
     }
 
-    window.location.assign("/#experience");
+    window.location.assign(fallbackHref);
   };
 
   return (

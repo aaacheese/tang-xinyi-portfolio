@@ -6,6 +6,7 @@ type ProjectItem = {
   id: string;
   imageSrc?: string;
   alt?: string;
+  href?: string;
 };
 
 type ProjectWheelProps = {
@@ -22,6 +23,7 @@ const BASE_PROJECTS: ProjectItem[] = [
     id: "project-02",
     imageSrc: "/assets/projects/02.png",
     alt: "习惯猫儿童行为习惯培养平台设计",
+    href: "/projects/habit-cat",
   },
   {
     id: "project-03",
@@ -111,6 +113,8 @@ export default function ProjectWheel({
   const sectionRef = useRef<HTMLDivElement>(null);
   const wheelRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const didDragRef = useRef(false);
+  const dragResetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const wheelItems =
     items.length > 1 ? [...items.slice(1), items[0]] : items;
@@ -230,8 +234,19 @@ export default function ProjectWheel({
       const [instance] = Draggable.create(wheel, {
         type: "rotation",
         trigger: cards,
+        dragClickables: true,
+        onPress() {
+          if (dragResetTimerRef.current) {
+            clearTimeout(dragResetTimerRef.current);
+            dragResetTimerRef.current = null;
+          }
+          didDragRef.current = false;
+        },
         onDragStart() {
           this.startRotation = this.rotation;
+        },
+        onDrag() {
+          didDragRef.current = true;
         },
         onDragEnd() {
           const start = this.startRotation ?? 0;
@@ -257,6 +272,11 @@ export default function ProjectWheel({
               ease: "power2.out",
             });
           }
+
+          dragResetTimerRef.current = setTimeout(() => {
+            didDragRef.current = false;
+            dragResetTimerRef.current = null;
+          }, 400);
         },
       });
 
@@ -270,6 +290,9 @@ export default function ProjectWheel({
       observer?.disconnect();
       timeline?.kill();
       draggableInstance?.kill();
+      if (dragResetTimerRef.current) {
+        clearTimeout(dragResetTimerRef.current);
+      }
     };
   }, []);
 
@@ -320,7 +343,28 @@ export default function ProjectWheel({
                 itemRefs.current[index] = node;
               }}
             >
-              <div className="project-wheel-card">
+              {item.href ? (
+                <a
+                  className="project-wheel-card project-wheel-card-link"
+                  href={item.href}
+                  aria-label={`Open ${item.alt ?? "project"} details`}
+                  onClick={(event) => {
+                    if (didDragRef.current) event.preventDefault();
+                  }}
+                >
+                  {item.imageSrc ? (
+                    <img
+                      className="project-wheel-image"
+                      src={item.imageSrc}
+                      alt={item.alt ?? ""}
+                      draggable={false}
+                    />
+                  ) : (
+                    <div className="project-wheel-placeholder" />
+                  )}
+                </a>
+              ) : (
+                <div className="project-wheel-card">
                 {item.imageSrc ? (
                   <img
                     className="project-wheel-image"
@@ -331,7 +375,8 @@ export default function ProjectWheel({
                 ) : (
                   <div className="project-wheel-placeholder" />
                 )}
-              </div>
+                </div>
+              )}
             </div>
           ))}
         </div>
