@@ -42,6 +42,7 @@ export default function XiaohongshuExperiencePage() {
       <div className={styles.gallery} aria-label="Xiaohongshu project pages">
         {pages.map(([page, width, height], index) => (
           <img
+            key={page}
             className={styles.image}
             src={`/assets/xiaohongshu/${page}.png`}
             alt={`Xiaohongshu experience design project, page ${page} of ${pages.length}`}
