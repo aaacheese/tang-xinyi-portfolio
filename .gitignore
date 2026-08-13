@@ -41,3 +41,6 @@ next-env.d.ts
 /.wrangler/
 /outputs/
 /work/
+
+# RedSkill workspace metadata contains machine-local install paths.
+/skills/.redskill-lock.json
