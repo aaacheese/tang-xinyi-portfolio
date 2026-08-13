@@ -101,7 +101,7 @@ const BASE_PROJECTS: ProjectItem[] = [
   {
     id: "project-18",
     imageSrc: "/assets/projects/18.png",
-    alt: "智能摄像设备工业设计",
+    alt: "百度健康医典产品界面设计",
   },
 ];
 
