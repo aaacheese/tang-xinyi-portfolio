@@ -128,6 +128,8 @@ export default function ExperienceStack({
                 alt={item.alt}
                 width={item.width}
                 height={item.height}
+                loading="lazy"
+                decoding="async"
               />
             </a>
           );
@@ -140,6 +142,8 @@ export default function ExperienceStack({
               alt={item.alt}
               width={item.width}
               height={item.height}
+              loading="lazy"
+              decoding="async"
             />
           </figure>
         );

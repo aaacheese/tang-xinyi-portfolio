@@ -1389,6 +1389,7 @@ a.project-stack-card:focus-visible {
   color: var(--paper);
 }
 
+.contact-lanyard-loader,
 .contact-lanyard {
   position: absolute;
   z-index: 1;
@@ -1396,6 +1397,14 @@ a.project-stack-card:focus-visible {
   width: 100%;
   height: 100%;
   overflow: hidden;
+}
+
+.contact-lanyard-loader {
+  pointer-events: none;
+}
+
+.contact-lanyard-loader .contact-lanyard {
+  pointer-events: auto;
 }
 
 .contact-lanyard canvas {

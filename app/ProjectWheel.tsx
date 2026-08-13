@@ -359,6 +359,8 @@ export default function ProjectWheel({
                       src={item.imageSrc}
                       alt={item.alt ?? ""}
                       draggable={false}
+                      loading="lazy"
+                      decoding="async"
                     />
                   ) : (
                     <div className="project-wheel-placeholder" />
@@ -372,6 +374,8 @@ export default function ProjectWheel({
                     src={item.imageSrc}
                     alt={item.alt ?? ""}
                     draggable={false}
+                    loading="lazy"
+                    decoding="async"
                   />
                 ) : (
                   <div className="project-wheel-placeholder" />

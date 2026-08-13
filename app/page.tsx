@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import CountUp from "./CountUp";
-import ContactLanyard from "./ContactLanyard";
 import ExperienceStack from "./ExperienceStack";
 import GooeyNav from "./GooeyNav";
+import LazyContactLanyard from "./LazyContactLanyard";
 import ProjectWheel from "./ProjectWheel";
 import StoryMotion from "./StoryMotion";
 import TiltedSkillCard from "./TiltedSkillCard";
@@ -143,13 +143,35 @@ export default function Home() {
         <div className="story-visual">
           <div className="story-card">
             <div className="story-face story-hero">
-              <img src="/assets/hero.jpg" alt="Tang Xinyi" />
+              <img
+                src="/assets/hero.jpg"
+                alt="Tang Xinyi"
+                width={1080}
+                height={1440}
+                loading="eager"
+                fetchPriority="high"
+                decoding="async"
+              />
             </div>
             <div className="story-face story-contents" aria-hidden="true">
-              <img src="/assets/contents.jpg" alt="" />
+              <img
+                src="/assets/contents.jpg"
+                alt=""
+                width={4096}
+                height={3072}
+                loading="lazy"
+                decoding="async"
+              />
             </div>
             <div className="story-face story-about" aria-hidden="true">
-              <img src="/assets/about.png" alt="" />
+              <img
+                src="/assets/about.png"
+                alt=""
+                width={3072}
+                height={4096}
+                loading="lazy"
+                decoding="async"
+              />
             </div>
           </div>
           <span className="story-about-label">Interaction Designer</span>
@@ -308,7 +330,7 @@ export default function Home() {
             </a>
           </div>
         </div>
-        <ContactLanyard frontImage="/assets/lanyard/frame-8.png" />
+        <LazyContactLanyard />
         <div className="contact-bottom">
           <div className="contact-data">
             <span>

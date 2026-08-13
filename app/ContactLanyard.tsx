@@ -235,6 +235,8 @@ export default function ContactLanyard({
   const [isCompact, setIsCompact] = useState(false);
   const [useStatic, setUseStatic] = useState(false);
   const [hasDropped, setHasDropped] = useState(false);
+  const [isNearViewport, setIsNearViewport] = useState(false);
+  const [isPageVisible, setIsPageVisible] = useState(true);
 
   useEffect(() => {
     const reducedMotion = window.matchMedia(
@@ -259,6 +261,28 @@ export default function ContactLanyard({
     return () => {
       reducedMotion.removeEventListener("change", updateMode);
       window.removeEventListener("resize", updateMode);
+    };
+  }, []);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsNearViewport(entry.isIntersecting),
+      { rootMargin: "600px 0px", threshold: 0 },
+    );
+    const updatePageVisibility = () => {
+      setIsPageVisible(document.visibilityState === "visible");
+    };
+
+    observer.observe(container);
+    updatePageVisibility();
+    document.addEventListener("visibilitychange", updatePageVisibility);
+
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", updatePageVisibility);
     };
   }, []);
 
@@ -302,7 +326,7 @@ export default function ContactLanyard({
       role="img"
       aria-label="Interactive identity badge. Drag the badge and release it to watch it swing back."
     >
-      {!mounted || useStatic ? (
+      {!mounted || useStatic || !isNearViewport || !isPageVisible ? (
         fallback
       ) : (
         <LanyardErrorBoundary fallback={fallback}>
