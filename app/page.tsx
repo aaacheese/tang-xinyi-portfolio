@@ -53,6 +53,7 @@ const experience = [
     alt: "Tencent — UI Design, CSIG Interaction Designer",
     width: 1592,
     height: 1086,
+    href: "/experience/tencent",
   },
 ];
 
