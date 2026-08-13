@@ -100,7 +100,7 @@ const BASE_PROJECTS: ProjectItem[] = [
   },
   {
     id: "project-18",
-    imageSrc: "/assets/projects/18.png",
+    imageSrc: "/assets/projects/18-baidu-health.png",
     alt: "百度健康医典产品界面设计",
   },
 ];
