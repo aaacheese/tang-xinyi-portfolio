@@ -1,0 +1,64 @@
+.page {
+  min-width: 320px;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: #080808;
+  line-height: 0;
+}
+
+.gallery {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.image {
+  display: block;
+  width: 100vw;
+  max-width: none;
+  height: auto;
+  margin: 0 0 -1px;
+  padding: 0;
+}
+
+.backButton {
+  position: fixed;
+  z-index: 10;
+  top: 24px;
+  left: 24px;
+  min-width: 92px;
+  height: 44px;
+  padding: 0 17px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  background: rgba(8, 8, 8, 0.76);
+  color: #fff;
+  font: 500 12px/1 "DM Mono", monospace;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  transition: border-color 180ms ease, background 180ms ease;
+}
+
+.backButton:hover,
+.backButton:focus-visible {
+  border-color: #d4ff3c;
+  background: rgba(8, 8, 8, 0.92);
+  outline: none;
+}
+
+@media (max-width: 760px) {
+  .backButton {
+    top: 14px;
+    left: 14px;
+    min-width: 82px;
+    height: 40px;
+    padding: 0 14px;
+    font-size: 10px;
+  }
+}

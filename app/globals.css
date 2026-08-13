@@ -998,6 +998,16 @@ main {
   will-change: transform;
 }
 
+a.project-stack-card {
+  display: block;
+  cursor: pointer;
+}
+
+a.project-stack-card:focus-visible {
+  outline: 2px solid var(--acid);
+  outline-offset: 6px;
+}
+
 .project-stack-card img {
   display: block;
   width: 100%;

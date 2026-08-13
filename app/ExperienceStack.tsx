@@ -8,6 +8,7 @@ type ExperienceItem = {
   alt: string;
   width: number;
   height: number;
+  href?: string;
 };
 
 type ExperienceStackProps = {
@@ -105,23 +106,44 @@ export default function ExperienceStack({
       ref={stackRef}
       aria-label="Experience projects"
     >
-      {items.map((item, index) => (
-        <figure
-          className="project-stack-card"
-          key={item.id}
-          ref={(card) => {
+      {items.map((item, index) => {
+        const cardProps = {
+          className: "project-stack-card",
+          ref: (card: HTMLElement | null) => {
             cardsRef.current[index] = card;
-          }}
-          style={{ zIndex: index + 1 }}
-        >
-          <img
-            src={item.imageSrc}
-            alt={item.alt}
-            width={item.width}
-            height={item.height}
-          />
-        </figure>
-      ))}
+          },
+          style: { zIndex: index + 1 },
+        };
+
+        if (item.href) {
+          return (
+            <a
+              {...cardProps}
+              href={item.href}
+              key={item.id}
+              aria-label={`View ${item.alt}`}
+            >
+              <img
+                src={item.imageSrc}
+                alt={item.alt}
+                width={item.width}
+                height={item.height}
+              />
+            </a>
+          );
+        }
+
+        return (
+          <figure {...cardProps} key={item.id}>
+            <img
+              src={item.imageSrc}
+              alt={item.alt}
+              width={item.width}
+              height={item.height}
+            />
+          </figure>
+        );
+      })}
       <div className="project-stack-end" aria-hidden="true" />
     </div>
   );

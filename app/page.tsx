@@ -44,6 +44,7 @@ const experience = [
     alt: "Xiaohongshu (RED) — Experience Design, Commerce Experience Designer",
     width: 1606,
     height: 1086,
+    href: "/experience/xiaohongshu",
   },
   {
     id: "tencent",
