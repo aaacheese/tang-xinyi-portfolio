@@ -37,6 +37,7 @@ const experience = [
     alt: "Meituan (Dianping) — UI and UX Design, Dianping UX Experience Designer",
     width: 1606,
     height: 1090,
+    href: "/experience/meituan",
   },
   {
     id: "xiaohongshu",
