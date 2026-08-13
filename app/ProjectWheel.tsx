@@ -18,6 +18,7 @@ const BASE_PROJECTS: ProjectItem[] = [
     id: "project-01",
     imageSrc: "/assets/projects/01.png",
     alt: "熊猫选娃 AI 智能识别挑选孩子照片项目",
+    href: "/projects/panda-photo-picker",
   },
   {
     id: "project-02",
