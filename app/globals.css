@@ -998,7 +998,7 @@ main {
 .project-stack-card {
   position: sticky;
   top: 80px;
-  width: 70%;
+  width: min(calc(70% + 38px), 100%);
   margin: 0 auto 120px;
   box-sizing: border-box;
   overflow: hidden;
