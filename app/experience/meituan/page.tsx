@@ -28,7 +28,7 @@ export default function MeituanExperiencePage() {
           <img
             key={page}
             className={styles.image}
-            src={`/assets/meituan/${page}.png`}
+            src={`/assets/meituan/${page}.${page === 27 ? "webp" : "png"}`}
             alt={`Meituan experience design project, page ${index + 1} of ${pages.length}`}
             width={width}
             height={height}
