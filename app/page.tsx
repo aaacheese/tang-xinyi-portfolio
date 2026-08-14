@@ -4,6 +4,7 @@ import ExperienceStack from "./ExperienceStack";
 import GooeyNav from "./GooeyNav";
 import LazyContactLanyard from "./LazyContactLanyard";
 import ProjectWheel from "./ProjectWheel";
+import PortfolioReturnRestorer from "./PortfolioReturnRestorer";
 import StoryMotion from "./StoryMotion";
 import TiltedSkillCard from "./TiltedSkillCard";
 
@@ -108,6 +109,7 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 export default function Home() {
   return (
     <main>
+      <PortfolioReturnRestorer />
       <input className="menu-toggle" id="menu-toggle" type="checkbox" />
       <header className="topbar">
         <a className="brand" href="#top" aria-label="Back to top">

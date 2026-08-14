@@ -1,6 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useRef } from "react";
+import {
+  getSectionOffset,
+  savePortfolioReturnState,
+} from "./portfolioReturnState";
 
 type ExperienceItem = {
   id: string;
@@ -122,6 +126,17 @@ export default function ExperienceStack({
               href={item.href}
               key={item.id}
               aria-label={`View ${item.alt}`}
+              onClick={() => {
+                const section = document.getElementById("experience");
+                if (!section) return;
+
+                savePortfolioReturnState({
+                  section: "experience",
+                  itemId: item.id,
+                  detailPath: item.href!,
+                  sectionOffset: getSectionOffset(section),
+                });
+              }}
             >
               <img
                 src={item.imageSrc}

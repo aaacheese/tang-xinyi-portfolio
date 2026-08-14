@@ -1,6 +1,12 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import {
+  clearPortfolioReturnState,
+  getSectionOffset,
+  readPortfolioReturnState,
+  savePortfolioReturnState,
+} from "./portfolioReturnState";
 
 type ProjectItem = {
   id: string;
@@ -116,6 +122,7 @@ export default function ProjectWheel({
   const itemRefs = useRef<Array<HTMLDivElement | null>>([]);
   const didDragRef = useRef(false);
   const dragResetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const getWheelRotationRef = useRef<(() => number) | null>(null);
 
   const wheelItems =
     items.length > 1 ? [...items.slice(1), items[0]] : items;
@@ -145,6 +152,13 @@ export default function ProjectWheel({
       const prefersReducedMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)",
       ).matches;
+      const returnState = readPortfolioReturnState("projects");
+      const shouldRestore = returnState?.restoreRequested === true;
+
+      getWheelRotationRef.current = () => {
+        const rotation = Number(gsap.getProperty(wheel, "rotation"));
+        return Number.isFinite(rotation) ? rotation : 0;
+      };
 
       const settleCards = () => {
         cards.forEach((card, index) => {
@@ -215,9 +229,13 @@ export default function ProjectWheel({
         });
       };
 
-      gsap.set(cards, { opacity: 0 });
+      gsap.set(cards, { opacity: shouldRestore ? 1 : 0 });
 
-      if (prefersReducedMotion) {
+      if (shouldRestore) {
+        settleCards();
+        gsap.set(wheel, { rotation: returnState.wheelRotation ?? 0 });
+        clearPortfolioReturnState();
+      } else if (prefersReducedMotion) {
         settleCards();
       } else {
         observer = new IntersectionObserver(
@@ -291,6 +309,7 @@ export default function ProjectWheel({
       observer?.disconnect();
       timeline?.kill();
       draggableInstance?.kill();
+      getWheelRotationRef.current = null;
       if (dragResetTimerRef.current) {
         clearTimeout(dragResetTimerRef.current);
       }
@@ -350,7 +369,21 @@ export default function ProjectWheel({
                   href={item.href}
                   aria-label={`Open ${item.alt ?? "project"} details`}
                   onClick={(event) => {
-                    if (didDragRef.current) event.preventDefault();
+                    if (didDragRef.current) {
+                      event.preventDefault();
+                      return;
+                    }
+
+                    const section = document.getElementById("projects");
+                    if (!section) return;
+
+                    savePortfolioReturnState({
+                      section: "projects",
+                      itemId: item.id,
+                      detailPath: item.href!,
+                      sectionOffset: getSectionOffset(section),
+                      wheelRotation: getWheelRotationRef.current?.() ?? 0,
+                    });
                   }}
                 >
                   {item.imageSrc ? (
