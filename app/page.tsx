@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import CountUp from "./CountUp";
 import ExperienceStack from "./ExperienceStack";
-import GooeyNav from "./GooeyNav";
 import LazyContactLanyard from "./LazyContactLanyard";
+import PortfolioNavigation from "./PortfolioNavigation";
 import ProjectWheel from "./ProjectWheel";
 import PortfolioReturnRestorer from "./PortfolioReturnRestorer";
 import StoryMotion from "./StoryMotion";
@@ -110,35 +110,7 @@ export default function Home() {
   return (
     <main>
       <PortfolioReturnRestorer />
-      <input className="menu-toggle" id="menu-toggle" type="checkbox" />
-      <header className="topbar">
-        <a className="brand" href="#top" aria-label="Back to top">
-          TXY<span>.</span>
-        </a>
-        <GooeyNav
-          className="desktop-nav"
-          items={navigation}
-          particleCount={10}
-          particleR={200}
-        />
-        <label className="menu-button" htmlFor="menu-toggle">
-          <span className="open-copy">Menu</span>
-          <span className="close-copy">Close</span>
-        </label>
-      </header>
-
-      <aside className="mobile-menu" aria-label="Mobile navigation">
-        {["Contents", "About", "Experience", "Projects", "Skills", "Contact"].map(
-          (item) => (
-            <a
-              href={`#${item.toLowerCase()}`}
-              key={item}
-            >
-              {item}
-            </a>
-          ),
-        )}
-      </aside>
+      <PortfolioNavigation items={navigation} />
 
       <div className="story-sequence">
         <StoryMotion />

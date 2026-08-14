@@ -177,6 +177,11 @@ main {
   place-items: center;
   opacity: 1;
   pointer-events: none;
+  transition:
+    left 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+    top 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+    width 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+    height 0.42s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .gooey-text {
@@ -1776,9 +1781,15 @@ a.project-stack-card:focus-visible {
   }
 
   .mobile-menu a {
+    position: relative;
     padding: 16px 0;
     border-bottom: 1px solid var(--line);
     font: 900 36px/40px "Fraunces", Georgia, serif;
+    transition: color 0.3s ease;
+  }
+
+  .mobile-menu a.active {
+    color: var(--acid);
   }
 
   .menu-toggle:checked ~ .topbar .open-copy {

@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
-type GooeyNavItem = {
+export type GooeyNavItem = {
   label: string;
   href: string;
 };
@@ -15,8 +15,21 @@ type GooeyNavProps = {
   particleR?: number;
   timeVariance?: number;
   colors?: number[];
-  initialActiveIndex?: number;
+  activeIndex: number;
+  onActiveIndexChange?: (index: number) => void;
   className?: string;
+};
+
+const noise = (value = 1) => value / 2 - Math.random() * value;
+
+const getXY = (
+  distance: number,
+  pointIndex: number,
+  totalPoints: number,
+): [number, number] => {
+  const angle =
+    (((360 + noise(8)) / totalPoints) * pointIndex * Math.PI) / 180;
+  return [distance * Math.cos(angle), distance * Math.sin(angle)];
 };
 
 export default function GooeyNav({
@@ -27,7 +40,8 @@ export default function GooeyNav({
   particleR = 200,
   timeVariance = 300,
   colors = [1, 2, 3, 1, 2, 3, 1, 4],
-  initialActiveIndex = 0,
+  activeIndex,
+  onActiveIndexChange,
   className = "",
 }: GooeyNavProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -35,19 +49,6 @@ export default function GooeyNav({
   const filterRef = useRef<HTMLSpanElement>(null);
   const textRef = useRef<HTMLSpanElement>(null);
   const timersRef = useRef<number[]>([]);
-  const [activeIndex, setActiveIndex] = useState(initialActiveIndex);
-
-  const noise = (value = 1) => value / 2 - Math.random() * value;
-
-  const getXY = (
-    distance: number,
-    pointIndex: number,
-    totalPoints: number,
-  ): [number, number] => {
-    const angle =
-      (((360 + noise(8)) / totalPoints) * pointIndex * Math.PI) / 180;
-    return [distance * Math.cos(angle), distance * Math.sin(angle)];
-  };
 
   const updateEffectPosition = (element: HTMLElement) => {
     if (!containerRef.current || !filterRef.current || !textRef.current) return;
@@ -130,7 +131,7 @@ export default function GooeyNav({
   const activateItem = (element: HTMLElement, index: number) => {
     if (activeIndex === index) return;
 
-    setActiveIndex(index);
+    onActiveIndexChange?.(index);
     updateEffectPosition(element);
     clearParticles();
 
