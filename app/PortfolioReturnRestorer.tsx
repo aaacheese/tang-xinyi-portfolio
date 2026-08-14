@@ -1,49 +1,59 @@
 "use client";
 
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import {
   clearPortfolioReturnState,
   readPortfolioReturnState,
 } from "./portfolioReturnState";
 
 export default function PortfolioReturnRestorer() {
-  useEffect(() => {
+  useLayoutEffect(() => {
+    const revealPage = () => {
+      document.documentElement.removeAttribute("data-portfolio-restoring");
+      document.documentElement.style.removeProperty("scroll-behavior");
+    };
+
+    const handlePageShow = (event: PageTransitionEvent) => {
+      if (!event.persisted) return;
+      clearPortfolioReturnState();
+      revealPage();
+    };
+
+    window.addEventListener("pageshow", handlePageShow);
+
     const state = readPortfolioReturnState();
-    if (!state?.restoreRequested) return;
+    if (!state?.restoreRequested) {
+      revealPage();
+      return () => window.removeEventListener("pageshow", handlePageShow);
+    }
 
-    let firstFrame = 0;
-    let secondFrame = 0;
+    const section = document.getElementById(state.section);
+    if (!section) {
+      clearPortfolioReturnState();
+      revealPage();
+      return () => window.removeEventListener("pageshow", handlePageShow);
+    }
 
-    firstFrame = window.requestAnimationFrame(() => {
-      secondFrame = window.requestAnimationFrame(() => {
-        const section = document.getElementById(state.section);
-        if (!section) {
-          clearPortfolioReturnState();
-          return;
-        }
+    const sectionTop = window.scrollY + section.getBoundingClientRect().top;
+    const maxScroll = Math.max(
+      document.documentElement.scrollHeight - window.innerHeight,
+      0,
+    );
+    const target = Math.min(
+      maxScroll,
+      Math.max(0, sectionTop + state.sectionOffset),
+    );
 
-        const sectionTop =
-          window.scrollY + section.getBoundingClientRect().top;
-        const maxScroll = Math.max(
-          document.documentElement.scrollHeight - window.innerHeight,
-          0,
-        );
-        const target = Math.min(
-          maxScroll,
-          Math.max(0, sectionTop + state.sectionOffset),
-        );
+    window.scrollTo({ top: target, behavior: "auto" });
 
-        window.scrollTo({ top: target, behavior: "auto" });
+    if (state.section === "experience") {
+      clearPortfolioReturnState();
+    }
 
-        if (state.section === "experience") {
-          clearPortfolioReturnState();
-        }
-      });
-    });
+    revealPage();
 
     return () => {
-      window.cancelAnimationFrame(firstFrame);
-      window.cancelAnimationFrame(secondFrame);
+      window.removeEventListener("pageshow", handlePageShow);
     };
   }, []);
 

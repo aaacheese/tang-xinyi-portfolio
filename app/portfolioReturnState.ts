@@ -10,8 +10,9 @@ export type PortfolioReturnState = {
   restoreRequested: boolean;
 };
 
-const STORAGE_KEY = "txy:portfolio-return-state:v1";
-const MAX_AGE_MS = 30 * 60 * 1000;
+export const PORTFOLIO_RETURN_STORAGE_KEY =
+  "txy:portfolio-return-state:v1";
+export const PORTFOLIO_RETURN_MAX_AGE_MS = 30 * 60 * 1000;
 
 const isValidState = (value: unknown): value is PortfolioReturnState => {
   if (!value || typeof value !== "object") return false;
@@ -34,18 +35,21 @@ export const readPortfolioReturnState = (
 
   try {
     const value: unknown = JSON.parse(
-      window.sessionStorage.getItem(STORAGE_KEY) ?? "null",
+      window.sessionStorage.getItem(PORTFOLIO_RETURN_STORAGE_KEY) ?? "null",
     );
 
-    if (!isValidState(value) || Date.now() - value.savedAt > MAX_AGE_MS) {
-      window.sessionStorage.removeItem(STORAGE_KEY);
+    if (
+      !isValidState(value) ||
+      Date.now() - value.savedAt > PORTFOLIO_RETURN_MAX_AGE_MS
+    ) {
+      window.sessionStorage.removeItem(PORTFOLIO_RETURN_STORAGE_KEY);
       return null;
     }
 
     if (section && value.section !== section) return null;
     return value;
   } catch {
-    window.sessionStorage.removeItem(STORAGE_KEY);
+    window.sessionStorage.removeItem(PORTFOLIO_RETURN_STORAGE_KEY);
     return null;
   }
 };
@@ -57,7 +61,7 @@ export const savePortfolioReturnState = (
 
   try {
     window.sessionStorage.setItem(
-      STORAGE_KEY,
+      PORTFOLIO_RETURN_STORAGE_KEY,
       JSON.stringify({
         ...state,
         savedAt: Date.now(),
@@ -75,7 +79,7 @@ export const requestPortfolioRestore = (detailPath: string) => {
 
   try {
     window.sessionStorage.setItem(
-      STORAGE_KEY,
+      PORTFOLIO_RETURN_STORAGE_KEY,
       JSON.stringify({ ...state, restoreRequested: true }),
     );
     return true;
@@ -88,7 +92,7 @@ export const clearPortfolioReturnState = () => {
   if (typeof window === "undefined") return;
 
   try {
-    window.sessionStorage.removeItem(STORAGE_KEY);
+    window.sessionStorage.removeItem(PORTFOLIO_RETURN_STORAGE_KEY);
   } catch {
     // Nothing else is required when storage is unavailable.
   }

@@ -18,6 +18,14 @@ html {
   background: var(--black);
 }
 
+html[data-portfolio-restoring="true"] {
+  scroll-behavior: auto !important;
+}
+
+html[data-portfolio-restoring="true"] body {
+  visibility: hidden;
+}
+
 body {
   margin: 0;
   background: var(--black);
