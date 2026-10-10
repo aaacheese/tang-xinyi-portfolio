@@ -154,7 +154,7 @@ export default function Home() {
       <section className="hero" id="top">
         <div className="grid-noise" />
         <div className="story-anchor story-anchor-hero" aria-hidden="true" />
-        <div className="hero-name hero-first">Tang</div>
+        <div className="hero-name hero-first">Hello</div>
         <div className="hero-name hero-last">Xinyi</div>
         <div className="role-sticker">Interaction Designer</div>
         <p className="hero-role">UX & Interaction Designer</p>
