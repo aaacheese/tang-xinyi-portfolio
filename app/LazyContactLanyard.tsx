@@ -32,7 +32,7 @@ export default function LazyContactLanyard() {
   return (
     <div ref={rootRef} className="contact-lanyard-loader">
       {shouldLoad ? (
-        <ContactLanyard frontImage="/assets/lanyard/frame-8.png" />
+        <ContactLanyard frontImage="/assets/lanyard/frame-9.png" />
       ) : (
         <div className="contact-lanyard" aria-hidden="true" />
       )}
